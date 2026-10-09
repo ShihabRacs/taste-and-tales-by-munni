@@ -27,7 +27,9 @@ export const PBKDF2_ITERATIONS = 600000;
 const b64 = (u8) => Buffer.from(u8).toString('base64');
 
 async function adminVault(env) {
-  const { ADMIN_USERNAME: user, ADMIN_PASSWORD: pass, ADMIN_GITHUB_TOKEN: token, GITHUB_REPOSITORY: repo } = env;
+  const { ADMIN_USERNAME: user, ADMIN_PASSWORD: pass, ADMIN_GITHUB_TOKEN: token } = env;
+  // GitHub Actions sets GITHUB_REPOSITORY; Vercel sets VERCEL_GIT_REPO_OWNER / _SLUG
+  const repo = env.GITHUB_REPOSITORY || (env.VERCEL_GIT_REPO_OWNER && `${env.VERCEL_GIT_REPO_OWNER}/${env.VERCEL_GIT_REPO_SLUG}`) || env.ADMIN_REPO;
   if (!user || !pass || !token) return null;
   const salt = crypto.getRandomValues(new Uint8Array(16));
   const iv = crypto.getRandomValues(new Uint8Array(12));
