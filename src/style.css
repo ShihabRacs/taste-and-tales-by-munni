@@ -418,3 +418,6 @@ dialog.lightbox { width: min(620px, calc(100vw - 24px)); padding: 16px 16px 20px
   *, *::before, *::after { transition: none !important; animation: none !important; }
   html { scroll-behavior: auto; }
 }
+
+/* Options that only appear under a parent choice (e.g. custom design) */
+fieldset.sub { margin-left: 6px; padding: 4px 0 4px 16px; border-left: 3px solid var(--pink); animation: pop 0.25s ease; }

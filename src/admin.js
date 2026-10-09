@@ -286,7 +286,16 @@ const tabs = {
     const redraw = () => render();
     return [
       ...groups.map((g, gi) => card(null,
-        el('div', { class: 'row wrap' }, field(g, 'label', 'Extra'), field(g, 'hint', 'Small note'), ...moveBtns(groups, gi, redraw),
+        el('div', { class: 'row wrap' }, field(g, 'label', 'Extra'), field(g, 'hint', 'Small note'),
+          el('label', { class: 'field' }, 'Only show when',
+            el('select', { onchange: (e) => {
+              if (e.target.value) { const [k, v] = e.target.value.split('='); g.showIf = { [k]: v }; } else delete g.showIf;
+              markDirty();
+            } },
+              el('option', { value: '' }, 'Always'),
+              ...groups.filter((x) => x !== g).flatMap((x) => x.options.slice(1).map((o) =>
+                el('option', { value: `${x.id}=${o.id}`, selected: g.showIf?.[x.id] === o.id }, `${x.label}: ${o.label}`))))),
+          ...moveBtns(groups, gi, redraw),
           el('button', { class: 'icon danger', title: 'Delete', onclick: () => { if (confirm(`Delete ${g.label}?`)) { groups.splice(gi, 1); markDirty(); redraw(); } } }, '🗑')),
         el('p', { class: 'hint' }, 'The first choice is the default.'),
         ...g.options.map((o, oi) => el('div', { class: 'row wrap sub' },

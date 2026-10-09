@@ -248,6 +248,23 @@
         ]
       },
       {
+        "id": "design",
+        "label": "Custom design",
+        "hint": "from 5€, final price confirmed by Munni",
+        "options": [
+          {
+            "id": "none",
+            "label": "None",
+            "price": 0
+          },
+          {
+            "id": "custom",
+            "label": "Custom design",
+            "price": 5
+          }
+        ]
+      },
+      {
         "id": "filling",
         "label": "Filling",
         "hint": "special fillings +3€",
@@ -277,7 +294,10 @@
             "label": "Rasmalai filling",
             "price": 3
           }
-        ]
+        ],
+        "showIf": {
+          "design": "custom"
+        }
       },
       {
         "id": "decoration",
@@ -319,24 +339,10 @@
             "label": "Themed (non-edible decoration)",
             "price": 0
           }
-        ]
-      },
-      {
-        "id": "design",
-        "label": "Custom design",
-        "hint": "from 5€, final price confirmed by Munni",
-        "options": [
-          {
-            "id": "none",
-            "label": "None",
-            "price": 0
-          },
-          {
-            "id": "custom",
-            "label": "Custom design",
-            "price": 5
-          }
-        ]
+        ],
+        "showIf": {
+          "design": "custom"
+        }
       },
       {
         "id": "topper",

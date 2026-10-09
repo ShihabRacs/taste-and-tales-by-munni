@@ -287,10 +287,15 @@ function renderBuilder() {
   $('#opt-size').replaceChildren(...cakes.sizes.map((s) =>
     chip('size', s.id, s.id === builder.size, () => { builder.size = s.id; renderBuilder(); },
       el('b', {}, s.label), el('small', {}, f?.prices?.[s.id] != null ? fmt(f.prices[s.id]) : 'on request'), s.serves ? el('small', { class: 'muted' }, `≈ ${s.serves} people`) : null)));
-  $('#opt-extras').replaceChildren(...cakes.extras.map((g) =>
-    el('fieldset', {}, el('legend', {}, g.label, g.hint ? el('small', {}, ` · ${g.hint}`) : null),
+  // Groups with showIf (e.g. filling, decoration) only appear under their parent choice;
+  // hidden ones fall back to their default so they never add to the price
+  const visible = (g) => !g.showIf || Object.entries(g.showIf).every(([k, v]) => builder.extras[k] === v);
+  for (const g of cakes.extras) if (!visible(g)) builder.extras[g.id] = g.options[0]?.id;
+  const hasChildren = (g) => cakes.extras.some((x) => x.showIf && g.id in x.showIf);
+  $('#opt-extras').replaceChildren(...cakes.extras.filter(visible).map((g) =>
+    el('fieldset', { class: g.showIf ? 'sub' : null }, el('legend', {}, g.label, g.hint ? el('small', {}, ` · ${g.hint}`) : null),
       el('div', { class: 'chips' }, ...g.options.map((o) =>
-        chip(`x-${g.id}`, o.id, builder.extras[g.id] === o.id, () => { builder.extras[g.id] = o.id; updatePreview(); },
+        chip(`x-${g.id}`, o.id, builder.extras[g.id] === o.id, () => { builder.extras[g.id] = o.id; hasChildren(g) ? renderBuilder() : updatePreview(); },
           o.label, o.price ? el('small', {}, `+${fmt(o.price)}`) : null))))));
   updatePreview();
 }
