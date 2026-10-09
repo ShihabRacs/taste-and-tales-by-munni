@@ -498,7 +498,7 @@ function orderText(data) {
   } else L.push(`Total: ${hasFrom() ? 'from ' : ''}${fmt(sub)}`);
   if (hasOnRequest()) L.push('(plus the cake priced on request)');
   if (hasFrom()) L.push('(starting price, final price to be confirmed by Munni)');
-  L.push('', `Name: ${data.name}`, `Phone: ${data.phone}`, `Email: ${data.email}`, `Pickup: ${data.date} at ${data.pickup}`);
+  L.push('', `Name: ${data.name}`, `Phone: ${data.phone}`, `Email: ${data.email}`, `Pickup: ${data.date}, ${data.time} at ${data.pickup}`);
   if (data.notes) L.push(`Notes: ${data.notes}`);
   return L.join('\n');
 }
@@ -510,6 +510,12 @@ function initOrder() {
   setMin();
   form.date.addEventListener('focus', setMin);
   $('#pickup-select').replaceChildren(...cfg.site.pickupPoints.map((p) => el('option', {}, p)));
+  // Pickup time slots, e.g. 13:30, 14:00 … until the closing time
+  const toMin = (t) => { const [h, m] = String(t).split(':').map(Number); return h * 60 + (m || 0); };
+  const slots = [];
+  for (let m = toMin(cfg.site.pickupFrom || '13:30'); m <= toMin(cfg.site.pickupUntil || '20:00'); m += cfg.site.pickupSlotMinutes || 30)
+    slots.push(`${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`);
+  $('#time-select').replaceChildren(el('option', { value: '' }, 'Choose a time'), ...slots.map((t) => el('option', {}, t)));
   if (claimed()) form.email.value = claimed().email;
   const saved = store.get('tt-contact', {});
   for (const k of ['name', 'phone', 'email']) if (saved[k] && !form[k].value) form[k].value = saved[k];

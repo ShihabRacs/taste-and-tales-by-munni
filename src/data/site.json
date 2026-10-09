@@ -18,7 +18,10 @@
       "100% Halal",
       "Eggless version available",
       "Order 5 days in advance"
-    ]
+    ],
+    "pickupFrom": "13:30",
+    "pickupUntil": "20:00",
+    "pickupSlotMinutes": 30
   },
   "coupon": {
     "enabled": true,

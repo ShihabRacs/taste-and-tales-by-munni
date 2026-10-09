@@ -222,7 +222,10 @@ const tabs = {
           field(s, 'instagram', 'Instagram username'),
           field(s, 'location', 'Location'),
           field(s, 'currency', 'Currency symbol'),
-          field(s, 'minDaysNotice', 'Minimum days notice for orders', 'number', { min: 0 }))),
+          field(s, 'minDaysNotice', 'Minimum days notice for orders', 'number', { min: 0 }),
+          field(s, 'pickupFrom', 'Pickup from', 'time'),
+          field(s, 'pickupUntil', 'Pickup until', 'time'),
+          field(s, 'pickupSlotMinutes', 'Minutes between pickup times', 'number', { min: 5, step: 5 }))),
       card('Pickup points', strList(s.pickupPoints, 'Customers choose one of these', 'e.g. Lichtenberg Bahnhof')),
       card('Badges', strList(s.badges, 'Short highlights shown in the hero', 'e.g. 100% Halal')),
     ];
