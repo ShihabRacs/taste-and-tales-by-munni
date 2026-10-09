@@ -195,6 +195,19 @@ async function uploadPhoto(file, caption) {
   return item;
 }
 
+function menuList(key, title, newLabel) {
+  cfg[key] ||= [];
+  const list = cfg[key];
+  const redraw = () => render();
+  return [card(title,
+    el('p', { class: 'hint' }, 'Sold by quantity. The section is hidden on the website when the list is empty.'),
+    ...list.map((t, i) => el('div', { class: 'row wrap' },
+      field(t, 'label', 'Name'), field(t, 'description', 'Description'), field(t, 'price', `Price (${cfg.site.currency})`, 'number', { min: 0, step: '0.5' }),
+      ...moveBtns(list, i, redraw),
+      el('button', { class: 'icon danger', title: 'Delete', onclick: () => { if (confirm(`Delete ${t.label}?`)) { list.splice(i, 1); markDirty(); redraw(); } } }, '🗑'))),
+    el('button', { class: 'btn ghost', onclick: () => { list.push({ id: `${key[0]}${Date.now().toString(36)}`, label: newLabel, description: '', price: 0 }); markDirty(); redraw(); } }, `+ Add ${newLabel.replace('New ', '')}`))];
+}
+
 /* ---------- Tabs ---------- */
 
 const tabs = {
@@ -224,11 +237,11 @@ const tabs = {
       el('thead', {}, el('tr', {}, el('th', {}, 'Flavor'), ...sizes.map((s) => el('th', {}, s.label)))),
       el('tbody', {}, ...flavors.map((f) => el('tr', {}, el('th', {}, f.label),
         ...sizes.map((s) => el('td', {}, el('input', {
-          type: 'number', min: 0, step: '0.5', value: f.prices[s.id] ?? '', 'aria-label': `${f.label} ${s.label}`,
+          type: 'number', min: 0, step: '0.5', value: f.prices[s.id] ?? '', placeholder: 'ask', 'aria-label': `${f.label} ${s.label}`,
           oninput: (e) => { f.prices[s.id] = e.target.value === '' ? null : Number(e.target.value); markDirty(); },
         })))))));
     return [
-      card('Price list', el('p', { class: 'hint' }, `Price per cake in ${cfg.site.currency}, by flavor and size.`), el('div', { class: 'scroll' }, table)),
+      card('Price list', el('p', { class: 'hint' }, `Price per cake in ${cfg.site.currency}, by flavor and size. Leave a box empty to show "price on request".`), el('div', { class: 'scroll' }, table)),
       card('Flavors',
         ...flavors.map((f, i) => el('div', { class: 'item' },
           el('div', { class: 'thumb' },
@@ -288,16 +301,8 @@ const tabs = {
     ];
   }],
 
-  treats: ['Treats', () => {
-    const list = cfg.treats;
-    const redraw = () => render();
-    return [card('Individual treats & savouries',
-      ...list.map((t, i) => el('div', { class: 'row wrap' },
-        field(t, 'label', 'Name'), field(t, 'description', 'Description'), field(t, 'price', `Price (${cfg.site.currency})`, 'number', { min: 0, step: '0.5' }),
-        ...moveBtns(list, i, redraw),
-        el('button', { class: 'icon danger', title: 'Delete', onclick: () => { if (confirm(`Delete ${t.label}?`)) { list.splice(i, 1); markDirty(); redraw(); } } }, '🗑'))),
-      el('button', { class: 'btn ghost', onclick: () => { list.push({ id: `t${Date.now().toString(36)}`, label: 'New treat', description: '', price: 0 }); markDirty(); redraw(); } }, '+ Add treat'))];
-  }],
+  pastries: ['Pastries', () => menuList('pastries', 'Pastries', 'New pastry')],
+  treats: ['Savouries', () => menuList('treats', 'Savouries', 'New item')],
 
   offers: ['Offers', () => {
     const list = cfg.offers;
@@ -402,7 +407,16 @@ const tabs = {
             el('label', { class: 'field' }, 'Flavor',
               el('select', { onchange: (e) => { p.flavor = e.target.value || null; markDirty(); } },
                 el('option', { value: '' }, 'Not tagged'),
-                ...cfg.cakes.flavors.map((f) => el('option', { value: f.id, selected: f.id === p.flavor }, f.label))))),
+                ...cfg.cakes.flavors.map((f) => el('option', { value: f.id, selected: f.id === p.flavor }, f.label)))),
+            el('details', {}, el('summary', {}, 'What this photo shows (used to match customer choices)'),
+              el('div', { class: 'grid2' }, ...cfg.cakes.extras.map((g) => el('label', { class: 'field' }, g.label,
+                el('select', { onchange: (e) => {
+                  p.match ||= {};
+                  if (e.target.value) p.match[g.id] = e.target.value; else delete p.match[g.id];
+                  markDirty();
+                } },
+                  el('option', { value: '' }, '—'),
+                  ...g.options.map((o) => el('option', { value: o.id, selected: p.match?.[g.id] === o.id }, o.label)))))))),
           el('div', { class: 'tools' }, ...moveBtns(list, i, redraw),
             el('button', { class: 'icon danger', title: 'Remove photo', onclick: () => remove(i) }, '🗑'))))),
     ];

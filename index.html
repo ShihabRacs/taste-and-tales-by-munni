@@ -31,7 +31,7 @@
     <nav class="nav-links" aria-label="Main">
       <a href="#cakes">Cakes</a>
       <a href="#gallery">Gallery</a>
-      <a href="#treats">Treats</a>
+      <a href="#pastries">Pastries</a>
       <a href="#offers">Offers</a>
       <a href="#info">Pickup</a>
     </nav>
@@ -113,7 +113,7 @@
         </figure>
         <form id="builder-form" class="options card" novalidate>
           <fieldset><legend>Flavor</legend><div class="chips flavors" id="opt-flavor"></div></fieldset>
-          <fieldset><legend>Size</legend><div class="chips sizes" id="opt-size"></div></fieldset>
+          <fieldset><legend>Size <small>· servings are approximate</small></legend><div class="chips sizes" id="opt-size"></div></fieldset>
           <div id="opt-extras"></div>
           <label class="field">Message on the cake <small>(optional)</small>
             <input id="opt-message" maxlength="60" placeholder="Happy Birthday Ayaan!" />
@@ -123,10 +123,18 @@
       </div>
     </section>
 
-    <section class="section" id="treats">
+    <section class="section menu-list" id="pastries">
       <div class="section-head">
         <p class="script">Little joys</p>
-        <h2>Individual treats &amp; savouries</h2>
+        <h2>Pastries</h2>
+      </div>
+      <ul class="treats card" id="pastries-list"></ul>
+    </section>
+
+    <section class="section menu-list" id="treats">
+      <div class="section-head">
+        <p class="script">Something savoury</p>
+        <h2>Savouries</h2>
       </div>
       <ul class="treats card" id="treats-list"></ul>
     </section>

@@ -24,7 +24,9 @@ export const money = (n, currency = '€') => `${Number.isInteger(n) ? n : n.toF
 export function cakePrice(cakes, cake) {
   if (!cake) return 0;
   const flavor = cakes.flavors.find((f) => f.id === cake.flavor);
-  let total = Number(flavor?.prices?.[cake.size]) || 0;
+  const base = flavor?.prices?.[cake.size];
+  if (base == null) return null; // price on request
+  let total = Number(base);
   for (const g of cakes.extras) {
     const opt = g.options.find((o) => o.id === cake.extras?.[g.id]);
     total += Number(opt?.price) || 0;

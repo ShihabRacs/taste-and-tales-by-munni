@@ -4,8 +4,9 @@ import { asset, timeOfDay, activeOffers, money, cakePrice, treatsPrice, personal
 
 const $ = (s, r = document) => r.querySelector(s);
 const cur = cfg.site.currency;
-const fmt = (n) => money(Math.round(n * 100) / 100, cur);
-const { cakes, treats } = cfg;
+const fmt = (n) => (n == null ? 'price on request' : money(Math.round(n * 100) / 100, cur));
+const { cakes } = cfg;
+const treats = [...(cfg.treats || []), ...(cfg.pastries || [])]; // everything sold by quantity
 const flavorById = (id) => cakes.flavors.find((f) => f.id === id);
 const sizeById = (id) => cakes.sizes.find((s) => s.id === id);
 const gallery = cfg.gallery || [];
@@ -16,6 +17,20 @@ const flavorPhotos = (f) => {
   const main = photoById(f.image);
   return [...(main ? [main] : []), ...gallery.filter((p) => p.flavor === f.id && p !== main)];
 };
+// How many of the customer's choices a photo shows (frosting, filling, decoration, …)
+const matchCount = (p, sel) =>
+  Object.entries(p.match || {}).filter(([g, o]) => sel.extras?.[g] === o).length;
+// Photos for the current selection: same flavor first, best option match first.
+// Untagged photos (e.g. themed cakes) join in when they match a choice.
+function photosFor(sel) {
+  const f = flavorById(sel.flavor);
+  const main = photoById(f?.image);
+  return gallery
+    .filter((p) => p.flavor === sel.flavor || (!flavorById(p.flavor) && matchCount(p, sel) > 0))
+    .map((p) => ({ p, score: matchCount(p, sel) * 2 + (p.flavor === sel.flavor ? 5 : 0) + (p === main ? 1 : 0) }))
+    .sort((a, b) => b.score - a.score)
+    .map(({ p }) => ({ ...p, matched: matchCount(p, sel) }));
+}
 
 const store = {
   get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } },
@@ -271,7 +286,7 @@ function renderBuilder() {
   }));
   $('#opt-size').replaceChildren(...cakes.sizes.map((s) =>
     chip('size', s.id, s.id === builder.size, () => { builder.size = s.id; renderBuilder(); },
-      el('b', {}, s.label), el('small', {}, f?.prices?.[s.id] != null ? fmt(f.prices[s.id]) : '–'), s.serves ? el('small', { class: 'muted' }, `serves ${s.serves}`) : null)));
+      el('b', {}, s.label), el('small', {}, f?.prices?.[s.id] != null ? fmt(f.prices[s.id]) : 'on request'), s.serves ? el('small', { class: 'muted' }, `≈ ${s.serves} people`) : null)));
   $('#opt-extras').replaceChildren(...cakes.extras.map((g) =>
     el('fieldset', {}, el('legend', {}, g.label, g.hint ? el('small', {}, ` · ${g.hint}`) : null),
       el('div', { class: 'chips' }, ...g.options.map((o) =>
@@ -280,10 +295,9 @@ function renderBuilder() {
   updatePreview();
 }
 
-let shownFlavor, photoIdx = 0;
+let shownKey, photoIdx = 0, photos = [];
 function showPhoto(i) {
   const f = flavorById(builder.flavor);
-  const photos = flavorPhotos(f);
   const img = $('#cake-img');
   const multi = photos.length > 1;
   $('#photo-prev').hidden = $('#photo-next').hidden = $('#photo-count').hidden = !multi;
@@ -303,7 +317,7 @@ function showPhoto(i) {
   const next = new Image();
   next.onload = next.onerror = () => { img.src = next.src; img.alt = p.caption; requestAnimationFrame(() => img.classList.remove('swap')); };
   next.src = asset(p.image);
-  $('#cake-photo-cap').textContent = p.caption;
+  $('#cake-photo-cap').replaceChildren(p.matched ? el('b', {}, 'Closest to your choices · ') : '', p.caption);
   $('#photo-count').textContent = `${photoIdx + 1} / ${photos.length}`;
   $('#cake-thumbs').replaceChildren(...(multi ? photos : []).map((x, j) =>
     el('button', { type: 'button', class: j === photoIdx ? 'on' : null, 'aria-label': x.caption, onclick: () => showPhoto(j) },
@@ -313,10 +327,13 @@ function showPhoto(i) {
 function updatePreview() {
   const f = flavorById(builder.flavor);
   if (!f) return;
-  if (shownFlavor !== f.id) { shownFlavor = f.id; showPhoto(0); }
+  const ranked = photosFor(builder);
+  const key = ranked.map((p) => `${p.id}:${p.matched}`).join();
+  if (key !== shownKey) { shownKey = key; photos = ranked; showPhoto(0); }
   $('#cake-name').textContent = `${f.label} · ${sizeById(builder.size)?.label || ''}`;
   $('#cake-desc').textContent = f.description;
-  $('#cake-price').textContent = fmt(cakePrice(cakes, builder));
+  const price = cakePrice(cakes, builder);
+  $('#cake-price').textContent = price == null ? 'On request' : fmt(price);
 }
 
 function setFlavor(id) {
@@ -337,7 +354,14 @@ function cakeLine(c) {
 /* ---------- Treats ---------- */
 
 function renderTreats() {
-  $('#treats-list').replaceChildren(...treats.map((t) => {
+  for (const [list, target] of [[cfg.treats || [], '#treats-list'], [cfg.pastries || [], '#pastries-list']]) {
+    $(target).closest('section').hidden = !list.length;
+    renderMenuList(list, target);
+  }
+}
+
+function renderMenuList(list, target) {
+  $(target).replaceChildren(...list.map((t) => {
     const q = cart.treats[t.id] || 0;
     return el('li', { class: 'treat' },
       el('span', { class: 'treat-name' }, el('strong', {}, t.label), t.description ? el('small', {}, t.description) : null),
@@ -369,7 +393,8 @@ const cart = (() => {
 const saveCart = () => store.set('tt-cart', cart);
 let applied = null; // { code, percent, label, kind }
 
-const subtotal = () => cart.cakes.reduce((s, c) => s + cakePrice(cakes, c), 0) + treatsPrice(treats, cart.treats);
+const subtotal = () => cart.cakes.reduce((s, c) => s + (cakePrice(cakes, c) ?? 0), 0) + treatsPrice(treats, cart.treats);
+const hasOnRequest = () => cart.cakes.some((c) => cakePrice(cakes, c) == null);
 
 function renderCart() {
   const rows = [
@@ -396,7 +421,7 @@ function renderCart() {
   const disc = applied ? Math.round(sub * applied.percent) / 100 : 0;
   $('#subtotal').textContent = fmt(sub);
   $('#discount').textContent = disc ? `−${fmt(disc)}` : fmt(0);
-  $('#total').textContent = fmt(sub - disc);
+  $('#total').textContent = fmt(sub - disc) + (hasOnRequest() ? ' + price on request' : '');
 }
 
 /* ---------- Codes ---------- */
@@ -446,6 +471,7 @@ function orderText(data) {
     const d = Math.round(sub * applied.percent) / 100;
     L.push(`Code ${applied.code} (${applied.percent}% off): −${fmt(d)}`, `Total: ${fmt(sub - d)}`);
   } else L.push(`Total: ${fmt(sub)}`);
+  if (hasOnRequest()) L.push('(plus the cake priced on request)');
   L.push('', `Name: ${data.name}`, `Phone: ${data.phone}`, `Email: ${data.email}`, `Pickup: ${data.date} at ${data.pickup}`);
   if (data.notes) L.push(`Notes: ${data.notes}`);
   return L.join('\n');
