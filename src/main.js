@@ -329,7 +329,7 @@ function showPhoto(i) {
   const next = new Image();
   next.onload = next.onerror = () => { img.src = next.src; img.alt = p.caption; requestAnimationFrame(() => img.classList.remove('swap')); };
   next.src = asset(p.image);
-  $('#cake-photo-cap').replaceChildren(p.matched ? el('b', {}, 'Closest to your choices · ') : '', p.caption);
+  $('#cake-photo-cap').textContent = p.caption;
   $('#photo-count').textContent = `${photoIdx + 1} / ${photos.length}`;
   $('#cake-thumbs').replaceChildren(...(multi ? photos : []).map((x, j) =>
     el('button', { type: 'button', class: j === photoIdx ? 'on' : null, 'aria-label': x.caption, onclick: () => showPhoto(j) },
