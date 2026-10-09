@@ -208,6 +208,7 @@
         },
         "color": "#EBD3A0",
         "fixed": {
+          "frosting": "Dairy cream",
           "filling": "Rasmalai filling"
         }
       }
