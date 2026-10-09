@@ -241,7 +241,7 @@
       {
         "id": "design",
         "label": "Custom design",
-        "hint": "any customization from 5€",
+        "hint": "choose it to add fillings and decorations, each priced separately",
         "options": [
           {
             "id": "none",
@@ -251,8 +251,7 @@
           {
             "id": "custom",
             "label": "Any customization",
-            "price": 5,
-            "from": true
+            "price": 0
           }
         ]
       },
