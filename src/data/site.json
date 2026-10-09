@@ -234,16 +234,6 @@
             "id": "cream-cheese",
             "label": "Cream cheese frosting",
             "price": 0
-          },
-          {
-            "id": "ganache",
-            "label": "Chocolate ganache",
-            "price": 0
-          },
-          {
-            "id": "dairy-cream",
-            "label": "Dairy cream",
-            "price": 0
           }
         ]
       },
@@ -472,7 +462,6 @@
       "image": "images/gallery/04-chocolate-ganache-cake-with-swiss-mering.webp",
       "thumb": "images/gallery/04-chocolate-ganache-cake-with-swiss-mering-sm.webp",
       "match": {
-        "frosting": "ganache",
         "flowers": "large",
         "decoration": "ganache-top"
       }
@@ -615,7 +604,6 @@
       "image": "images/gallery/17-rasmalai-cake-with-rasmalai-filling.webp",
       "thumb": "images/gallery/17-rasmalai-cake-with-rasmalai-filling-sm.webp",
       "match": {
-        "frosting": "dairy-cream",
         "filling": "rasmalai"
       }
     },
@@ -659,7 +647,6 @@
       "image": "images/gallery/21-rasmalai-cake-with-fresh-roses.webp",
       "thumb": "images/gallery/21-rasmalai-cake-with-fresh-roses-sm.webp",
       "match": {
-        "frosting": "dairy-cream",
         "filling": "rasmalai",
         "flowers": "large"
       }
