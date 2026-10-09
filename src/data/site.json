@@ -190,7 +190,7 @@
       {
         "id": "rasmalai",
         "label": "Rasmalai",
-        "description": "Rasmalai cake with rasmalai filling, dairy cream and buttercream. Made as a classic, no customization",
+        "description": "Rasmalai cake with rasmalai filling (included), dairy cream and buttercream",
         "image": "17-rasmalai-cake-with-rasmalai-filling",
         "prices": {
           "5": 40,
@@ -239,9 +239,6 @@
             "label": "Cream cheese frosting",
             "price": 0
           }
-        ],
-        "hideFor": [
-          "rasmalai"
         ]
       },
       {
@@ -379,9 +376,6 @@
             "price": 5,
             "from": true
           }
-        ],
-        "hideFor": [
-          "rasmalai"
         ]
       },
       {
