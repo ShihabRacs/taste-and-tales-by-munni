@@ -172,7 +172,7 @@
       {
         "id": "red-velvet",
         "label": "Classic Red Velvet",
-        "description": "Red velvet with cream cheese frosting and vanilla buttercream",
+        "description": "Red velvet with cream cheese filling (included) and vanilla buttercream",
         "image": "18-red-velvet-cheesecake",
         "prices": {
           "5": 40,
@@ -286,7 +286,10 @@
         ],
         "showIf": {
           "design": "custom"
-        }
+        },
+        "hideFor": [
+          "red-velvet"
+        ]
       },
       {
         "id": "decoration",

@@ -289,7 +289,8 @@ function renderBuilder() {
       el('b', {}, s.label), el('small', {}, f?.prices?.[s.id] != null ? fmt(f.prices[s.id]) : 'on request'), s.serves ? el('small', { class: 'muted' }, `≈ ${s.serves} people`) : null)));
   // Groups with showIf (e.g. filling, decoration) only appear under their parent choice;
   // hidden ones fall back to their default so they never add to the price
-  const visible = (g) => !g.showIf || Object.entries(g.showIf).every(([k, v]) => builder.extras[k] === v);
+  const visible = (g) => !(g.hideFor || []).includes(builder.flavor) &&
+    (!g.showIf || Object.entries(g.showIf).every(([k, v]) => builder.extras[k] === v));
   for (const g of cakes.extras) if (!visible(g)) builder.extras[g.id] = g.options[0]?.id;
   const hasChildren = (g) => cakes.extras.some((x) => x.showIf && g.id in x.showIf);
   $('#opt-extras').replaceChildren(...cakes.extras.filter(visible).map((g) =>

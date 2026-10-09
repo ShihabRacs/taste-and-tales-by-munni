@@ -298,6 +298,14 @@ const tabs = {
           ...moveBtns(groups, gi, redraw),
           el('button', { class: 'icon danger', title: 'Delete', onclick: () => { if (confirm(`Delete ${g.label}?`)) { groups.splice(gi, 1); markDirty(); redraw(); } } }, '🗑')),
         el('p', { class: 'hint' }, 'The first choice is the default.'),
+        el('div', { class: 'field' }, el('span', {}, 'Hide for these flavors'),
+          el('div', { class: 'row wrap' }, ...cfg.cakes.flavors.map((f) => el('label', { class: 'check' },
+            el('input', { type: 'checkbox', checked: (g.hideFor || []).includes(f.id), onchange: (e) => {
+              const set = new Set(g.hideFor || []);
+              e.target.checked ? set.add(f.id) : set.delete(f.id);
+              if (set.size) g.hideFor = [...set]; else delete g.hideFor;
+              markDirty();
+            } }), ' ', f.label)))),
         ...g.options.map((o, oi) => el('div', { class: 'row wrap sub' },
           field(o, 'label', 'Choice'), field(o, 'price', `Price (${cfg.site.currency})`, 'number', { min: 0, step: '0.5' }),
           field(o, 'from', 'Starting price (can be more)', 'checkbox'),
