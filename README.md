@@ -23,17 +23,17 @@ Every change to `main` is built and deployed automatically by Vercel, usually wi
 
 ### Admin sign-in
 
-Add three environment variables in **Vercel → taste-and-tales-by-munni → Settings → Environment Variables** (environment: Production, mark them **Sensitive**):
+Add these environment variables in **Vercel → taste-and-tales-by-munni → Settings → Environment Variables** (environment: Production, mark them **Sensitive**):
 
 | Name | Value |
 | --- | --- |
 | `ADMIN_USERNAME` | the admin username |
 | `ADMIN_PASSWORD` | a long password (it protects the token below, so make it strong) |
-| `ADMIN_GITHUB_TOKEN` | a fine-grained token: **Only select repositories** → `taste-and-tales-by-munni`, permissions **Contents: Read and write** and **Commit statuses: Read-only** ([create one](https://github.com/settings/personal-access-tokens/new)) |
+| `ADMIN_GITHUB_TOKEN` (optional) | a fine-grained token: **Only select repositories** → `taste-and-tales-by-munni`, permissions **Contents: Read and write** and **Commit statuses: Read-only** ([create one](https://github.com/settings/personal-access-tokens/new)) |
 
 Then redeploy (Deployments → ⋯ → Redeploy, or push any change). During the build the token is encrypted with a key derived from the username and password (PBKDF2, 600,000 rounds → AES-GCM); only the encrypted copy is published. Signing in with the right username and password unlocks it in the browser.
 
-To change the password, update the variable and redeploy. Without these variables, the admin page asks for a GitHub token instead.
+Without `ADMIN_GITHUB_TOKEN`, the admin asks for the token once after the first sign-in and keeps it on that device; the password is still asked every session. To change the password, update the variable and redeploy.
 
 ### Personal coupons
 
