@@ -16,7 +16,7 @@ export const timeOfDay = (hero, d = new Date()) =>
   inWindow(hero.dayStartsAt, hero.eveningStartsAt, d) ? 'day' : 'evening';
 
 export const activeOffers = (offers, d = new Date()) =>
-  (offers || []).filter((o) => o.active && inWindow(o.start, o.end, d));
+  (offers || []).filter((o) => o.active && o.showOnSite);
 
 export const money = (n, currency = '€') => `${Number.isInteger(n) ? n : n.toFixed(2)}${currency}`;
 
@@ -59,8 +59,6 @@ export async function checkCode(cfg, code, email, d = new Date()) {
   const offer = (cfg.offers || []).find((o) => norm(o.code) === code);
   if (offer) {
     if (!offer.active) return { ok: false, reason: 'This offer has ended.' };
-    if (!inWindow(offer.start, offer.end, d))
-      return { ok: false, reason: `This code works between ${offer.start} and ${offer.end}.` };
     return { ok: true, percent: offer.percent, label: offer.label, kind: 'offer' };
   }
   const c = cfg.coupon;

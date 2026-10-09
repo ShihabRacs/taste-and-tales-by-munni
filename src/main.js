@@ -124,7 +124,7 @@ function renderOffers() {
   const items = activeOffers(cfg.offers).map((o) =>
     el('button', { class: 'offer', type: 'button', onclick: () => applyCodeFromUI(o.code) },
       el('span', { class: 'offer-pct' }, `${o.percent}%`),
-      el('span', { class: 'offer-text' }, el('strong', {}, o.label), el('small', {}, `Code ${o.code} · tap to apply · until ${o.end}`))));
+      el('span', { class: 'offer-text' }, el('strong', {}, o.label), el('small', {}, `Code ${o.code} · tap to apply`))));
   if (cfg.coupon.enabled) {
     const c = claimed();
     items.push(c

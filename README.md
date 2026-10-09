@@ -10,7 +10,7 @@ Homemade cakes in Berlin. A fast static website built with Vite and hosted free 
 - Pink vanilla look during the day, chocolate look in the evening, with a rotating hero slideshow (switch times set in admin)
 - Interactive cake builder: flavor × size price list, extras, message on cake, live price, flavor photo changes with the selection
 - Individual treats & savouries with quantities
-- Time-based offer codes (e.g. `MORNING10` only works 06:00–11:00)
+- Coupon codes you create in admin (percent off, on/off, optionally shown on the site)
 - Email popup that gives each visitor a personal one-time coupon
 - Orders go to Facebook Messenger (or WhatsApp) with the full order already written
 - Gallery carousel of real cakes with a full-screen view and "I want a cake like this"

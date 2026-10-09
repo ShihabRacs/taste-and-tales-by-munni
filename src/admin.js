@@ -322,20 +322,21 @@ const tabs = {
   pastries: ['Pastries', () => menuList('pastries', 'Pastries', 'New pastry')],
   treats: ['Savouries', () => menuList('treats', 'Savouries', 'New item')],
 
-  offers: ['Offers', () => {
+  offers: ['Coupon codes', () => {
+    cfg.offers ||= [];
     const list = cfg.offers;
     const redraw = () => render();
-    return [card('Time-based offer codes',
-      el('p', { class: 'hint' }, 'Each code only works between its start and end time (the customer\'s local time). The site shows the offers that are running right now.'),
+    return [card('Coupon codes',
+      el('p', { class: 'hint' }, 'Codes you create and share yourself. They work while Active is ticked. Tick "Show on website" to also show the code on the site.'),
       ...list.map((o, i) => el('div', { class: 'item col' },
         el('div', { class: 'row wrap' },
           field(o, 'code', 'Code', 'text', { style: 'text-transform:uppercase', after: (v) => (o.code = v.toUpperCase()) }),
           field(o, 'percent', '% off', 'number', { min: 1, max: 100 }),
-          field(o, 'start', 'From', 'time'), field(o, 'end', 'Until', 'time'),
           field(o, 'active', 'Active', 'checkbox'),
+          field(o, 'showOnSite', 'Show on website', 'checkbox'),
           el('button', { class: 'icon danger', title: 'Delete', onclick: () => { if (confirm(`Delete ${o.code}?`)) { list.splice(i, 1); markDirty(); redraw(); } } }, '🗑')),
         field(o, 'label', 'Text shown to customers'))),
-      el('button', { class: 'btn ghost', onclick: () => { list.push({ code: 'NEWCODE', label: 'New offer', percent: 10, start: '09:00', end: '12:00', active: true }); markDirty(); redraw(); } }, '+ Add offer'))];
+      el('button', { class: 'btn ghost', onclick: () => { list.push({ code: 'NEWCODE', label: 'New coupon', percent: 10, active: true, showOnSite: false }); markDirty(); redraw(); } }, '+ Add coupon code'))];
   }],
 
   coupons: ['Coupons', () => {

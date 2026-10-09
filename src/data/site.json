@@ -57,24 +57,7 @@
       ]
     }
   },
-  "offers": [
-    {
-      "code": "MORNING10",
-      "label": "Early bird: 10% off cakes ordered before 11am",
-      "percent": 10,
-      "start": "06:00",
-      "end": "11:00",
-      "active": true
-    },
-    {
-      "code": "COCOA15",
-      "label": "Chocolate hour: 15% off every evening 6 to 10pm",
-      "percent": 15,
-      "start": "18:00",
-      "end": "22:00",
-      "active": true
-    }
-  ],
+  "offers": [],
   "cakes": {
     "sizes": [
       {
