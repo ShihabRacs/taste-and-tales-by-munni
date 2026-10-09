@@ -363,7 +363,7 @@
       {
         "id": "topper",
         "label": "Topper",
-        "hint": "from 3–5€",
+        "hint": "simple 2€ · premium from 5€",
         "options": [
           {
             "id": "none",
@@ -373,12 +373,13 @@
           {
             "id": "simple",
             "label": "Simple topper",
-            "price": 3
+            "price": 2
           },
           {
             "id": "premium",
             "label": "Premium topper",
-            "price": 5
+            "price": 5,
+            "from": true
           }
         ]
       },
