@@ -182,7 +182,10 @@
           "9": 90,
           "10": null
         },
-        "color": "#A4161A"
+        "color": "#A4161A",
+        "defaults": {
+          "frosting": "cream-cheese"
+        }
       },
       {
         "id": "rasmalai",

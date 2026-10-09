@@ -270,6 +270,7 @@ const defaults = () => ({
   message: '',
 });
 const builder = defaults();
+Object.assign(builder.extras, flavorById(builder.flavor)?.defaults || {});
 
 function chip(name, value, checked, onChange, ...content) {
   return el('label', { class: 'chip' },
@@ -342,7 +343,15 @@ function updatePreview() {
   $('#cake-price').textContent = price == null ? 'On request' : (isFromCake(builder) ? 'from ' : '') + fmt(price);
 }
 
+// Each flavor can preselect choices (e.g. red velvet → cream cheese frosting)
+function applyFlavorDefaults(prevId, id) {
+  for (const k of Object.keys(flavorById(prevId)?.defaults || {}))
+    builder.extras[k] = cakes.extras.find((g) => g.id === k)?.options[0]?.id;
+  Object.assign(builder.extras, flavorById(id)?.defaults || {});
+}
+
 function setFlavor(id) {
+  applyFlavorDefaults(builder.flavor, id);
   builder.flavor = id;
   renderBuilder();
 }
