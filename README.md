@@ -13,7 +13,8 @@ Homemade cakes in Berlin. A fast static website built with Vite and hosted free 
 - Time-based offer codes (e.g. `MORNING10` only works 06:00–11:00)
 - Email popup that gives each visitor a personal one-time coupon
 - Orders go to Facebook Messenger (or WhatsApp) with the full order already written
-- Admin panel to change prices, flavors, photos, offers, texts and coupons, with no database
+- Gallery carousel of real cakes with a full-screen view and "I want a cake like this"
+- Admin panel to change prices, flavors, photos, gallery, offers, texts and coupons, with no database
 
 ## How it works
 
@@ -39,8 +40,9 @@ To make it fully one-time, open **Admin → Coupons**, check the code, and click
 
 ```bash
 npm install
-npm run dev      # http://localhost:5173/taste-and-tales-by-munni/
+npm run dev      # http://localhost:5173/
 npm run build    # output in dist/
+npm run preview  # serve the build at http://localhost:4173/
 ```
 
 Preview a theme at any time with `?theme=day` or `?theme=evening`.

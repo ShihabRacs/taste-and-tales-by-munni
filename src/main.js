@@ -8,6 +8,14 @@ const fmt = (n) => money(Math.round(n * 100) / 100, cur);
 const { cakes, treats } = cfg;
 const flavorById = (id) => cakes.flavors.find((f) => f.id === id);
 const sizeById = (id) => cakes.sizes.find((s) => s.id === id);
+const gallery = cfg.gallery || [];
+const photoById = (id) => gallery.find((p) => p.id === id);
+const fromPrice = (f) => Math.min(...Object.values(f.prices).filter((v) => v != null));
+// Main photo first, then every gallery photo tagged with that flavor
+const flavorPhotos = (f) => {
+  const main = photoById(f.image);
+  return [...(main ? [main] : []), ...gallery.filter((p) => p.flavor === f.id && p !== main)];
+};
 
 const store = {
   get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } },
@@ -55,10 +63,13 @@ function applyTheme(t) {
 
   const box = $('#hero-slides');
   const tag = $('#hero-tag');
-  const slides = (h.slides || []).map(flavorById).filter(Boolean);
-  box.replaceChildren(...slides.map((f, i) =>
-    el('img', { src: asset(f.image), alt: '', class: i === 0 ? 'on' : null, width: 348, height: 178, fetchpriority: i === 0 ? 'high' : null, loading: i === 0 ? null : 'lazy' })));
-  const setTag = (f) => tag.replaceChildren(el('span', {}, f.label), el('small', {}, `from ${fmt(Math.min(...Object.values(f.prices)))}`));
+  const slides = (h.slides || []).map(photoById).filter(Boolean);
+  box.replaceChildren(...slides.map((p, i) =>
+    el('img', { src: asset(p.image), alt: p.caption, class: i === 0 ? 'on' : null, width: 960, height: 1200, fetchpriority: i === 0 ? 'high' : null, loading: i === 0 ? null : 'lazy' })));
+  const setTag = (p) => {
+    const f = flavorById(p.flavor);
+    tag.replaceChildren(el('span', {}, p.caption), f ? el('small', {}, `${f.label} from ${fmt(fromPrice(f))}`) : null);
+  };
   let i = 0;
   if (slides[0]) setTag(slides[0]);
   clearInterval(slideTimer);
@@ -148,14 +159,91 @@ function initGate() {
 
 /* ---------- Flavor cards ---------- */
 
+const swatch = (f, big) =>
+  el('span', { class: `swatch${big ? ' big' : ''}`, style: `--c:${f.color || '#F3E3C8'}` },
+    el('span', {}, f.label), el('small', {}, 'Photo coming soon'));
+
 function renderFlavorGrid() {
-  $('#flavor-grid').replaceChildren(...cakes.flavors.map((f) =>
-    el('button', { class: 'flavor-card', type: 'button', onclick: () => { setFlavor(f.id); $('#builder').scrollIntoView({ behavior: 'smooth' }); } },
-      el('img', { src: asset(f.image), alt: `${f.label} cake`, loading: 'lazy', width: 348, height: 178 }),
+  $('#flavor-grid').replaceChildren(...cakes.flavors.map((f) => {
+    const p = flavorPhotos(f)[0];
+    return el('button', { class: 'flavor-card', type: 'button', onclick: () => { setFlavor(f.id); $('#builder').scrollIntoView({ behavior: 'smooth' }); } },
+      p ? el('img', { src: asset(p.thumb), alt: `${f.label} cake: ${p.caption}`, loading: 'lazy', width: 480, height: 600 }) : swatch(f),
       el('span', { class: 'fc-body' },
         el('strong', {}, f.label),
         el('span', {}, f.description),
-        el('em', {}, `from ${fmt(Math.min(...Object.values(f.prices)))}`)))));
+        el('em', {}, `from ${fmt(fromPrice(f))}`)));
+  }));
+}
+
+/* ---------- Gallery carousel & lightbox ---------- */
+
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+let lbIndex = 0;
+
+function renderGallery() {
+  const sec = $('#gallery');
+  if (!gallery.length) { sec.hidden = true; return; }
+  const track = $('#gallery-track');
+  track.replaceChildren(...gallery.map((p, i) =>
+    el('button', { class: 'slide', type: 'button', onclick: () => openLightbox(i), 'aria-label': `View: ${p.caption}` },
+      el('img', { src: asset(p.thumb), alt: p.caption, loading: 'lazy', width: 480, height: 600 }),
+      el('span', {}, p.caption))));
+  const step = () => track.firstElementChild.getBoundingClientRect().width + 16;
+  const go = (dir) => {
+    const atEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - 8;
+    const atStart = track.scrollLeft <= 8;
+    if (dir > 0 && atEnd) track.scrollTo({ left: 0, behavior: 'smooth' });
+    else if (dir < 0 && atStart) track.scrollTo({ left: track.scrollWidth, behavior: 'smooth' });
+    else track.scrollBy({ left: dir * step(), behavior: 'smooth' });
+  };
+  $('#gal-prev').onclick = () => go(-1);
+  $('#gal-next').onclick = () => go(1);
+  if (reduceMotion) return;
+  let paused = false, visible = false;
+  for (const ev of ['pointerenter', 'focusin', 'touchstart']) sec.addEventListener(ev, () => (paused = true), { passive: true });
+  for (const ev of ['pointerleave', 'focusout']) sec.addEventListener(ev, () => (paused = false));
+  new IntersectionObserver(([e]) => (visible = e.isIntersecting)).observe(track);
+  setInterval(() => { if (visible && !paused && !document.hidden) go(1); }, 3500);
+}
+
+function showLightbox() {
+  const p = gallery[lbIndex];
+  const img = $('#lb-img');
+  img.src = asset(p.image);
+  img.alt = p.caption;
+  $('#lb-cap').textContent = p.caption;
+  $('#lb-count').textContent = `${lbIndex + 1} / ${gallery.length}`;
+}
+function openLightbox(i) {
+  lbIndex = i;
+  showLightbox();
+  $('#lightbox').showModal();
+}
+function initLightbox() {
+  const lb = $('#lightbox');
+  const move = (d) => { lbIndex = (lbIndex + d + gallery.length) % gallery.length; showLightbox(); };
+  $('#lb-prev').onclick = () => move(-1);
+  $('#lb-next').onclick = () => move(1);
+  lb.addEventListener('keydown', (e) => { if (e.key === 'ArrowLeft') move(-1); if (e.key === 'ArrowRight') move(1); });
+  lb.addEventListener('click', (e) => { if (e.target === lb) lb.close(); });
+  let x0 = null;
+  lb.addEventListener('touchstart', (e) => (x0 = e.touches[0].clientX), { passive: true });
+  lb.addEventListener('touchend', (e) => {
+    if (x0 == null) return;
+    const dx = e.changedTouches[0].clientX - x0;
+    if (Math.abs(dx) > 40) move(dx < 0 ? 1 : -1);
+    x0 = null;
+  });
+  $('#lb-want').onclick = () => {
+    const p = gallery[lbIndex];
+    const notes = $('#order-form').notes;
+    const line = `Design like: "${p.caption}"`;
+    if (!notes.value.includes(line)) notes.value = notes.value ? `${notes.value}\n${line}` : line;
+    if (flavorById(p.flavor)) setFlavor(p.flavor);
+    lb.close();
+    $('#builder').scrollIntoView({ behavior: 'smooth' });
+    toast('Design noted in your order. Now pick a size.');
+  };
 }
 
 /* ---------- Builder ---------- */
@@ -176,9 +264,11 @@ function chip(name, value, checked, onChange, ...content) {
 
 function renderBuilder() {
   const f = flavorById(builder.flavor);
-  $('#opt-flavor').replaceChildren(...cakes.flavors.map((x) =>
-    chip('flavor', x.id, x.id === builder.flavor, () => setFlavor(x.id),
-      el('img', { src: asset(x.image), alt: '', loading: 'lazy', width: 48, height: 48 }), x.label)));
+  $('#opt-flavor').replaceChildren(...cakes.flavors.map((x) => {
+    const p = flavorPhotos(x)[0];
+    return chip('flavor', x.id, x.id === builder.flavor, () => setFlavor(x.id),
+      p ? el('img', { src: asset(p.thumb), alt: '', loading: 'lazy', width: 48, height: 48 }) : el('i', { class: 'dot', style: `background:${x.color || '#F3E3C8'}` }), x.label);
+  }));
   $('#opt-size').replaceChildren(...cakes.sizes.map((s) =>
     chip('size', s.id, s.id === builder.size, () => { builder.size = s.id; renderBuilder(); },
       el('b', {}, s.label), el('small', {}, f?.prices?.[s.id] != null ? fmt(f.prices[s.id]) : '–'), s.serves ? el('small', { class: 'muted' }, `serves ${s.serves}`) : null)));
@@ -190,18 +280,40 @@ function renderBuilder() {
   updatePreview();
 }
 
-let lastImg;
+let shownFlavor, photoIdx = 0;
+function showPhoto(i) {
+  const f = flavorById(builder.flavor);
+  const photos = flavorPhotos(f);
+  const img = $('#cake-img');
+  const multi = photos.length > 1;
+  $('#photo-prev').hidden = $('#photo-next').hidden = $('#photo-count').hidden = !multi;
+  if (!photos.length) {
+    img.hidden = true;
+    $('#cake-swatch').replaceChildren(swatch(f, true));
+    $('#cake-swatch').hidden = false;
+    $('#cake-photo-cap').textContent = '';
+    $('#cake-thumbs').replaceChildren();
+    return;
+  }
+  photoIdx = (i + photos.length) % photos.length;
+  const p = photos[photoIdx];
+  img.hidden = false;
+  $('#cake-swatch').hidden = true;
+  img.classList.add('swap');
+  const next = new Image();
+  next.onload = next.onerror = () => { img.src = next.src; img.alt = p.caption; requestAnimationFrame(() => img.classList.remove('swap')); };
+  next.src = asset(p.image);
+  $('#cake-photo-cap').textContent = p.caption;
+  $('#photo-count').textContent = `${photoIdx + 1} / ${photos.length}`;
+  $('#cake-thumbs').replaceChildren(...(multi ? photos : []).map((x, j) =>
+    el('button', { type: 'button', class: j === photoIdx ? 'on' : null, 'aria-label': x.caption, onclick: () => showPhoto(j) },
+      el('img', { src: asset(x.thumb), alt: '', loading: 'lazy', width: 64, height: 80 }))));
+}
+
 function updatePreview() {
   const f = flavorById(builder.flavor);
   if (!f) return;
-  const img = $('#cake-img');
-  if (lastImg !== f.image) {
-    lastImg = f.image;
-    img.classList.add('swap');
-    const next = new Image();
-    next.onload = next.onerror = () => { img.src = next.src; img.alt = `${f.label} cake`; requestAnimationFrame(() => img.classList.remove('swap')); };
-    next.src = asset(f.image);
-  }
+  if (shownFlavor !== f.id) { shownFlavor = f.id; showPhoto(0); }
   $('#cake-name').textContent = `${f.label} · ${sizeById(builder.size)?.label || ''}`;
   $('#cake-desc').textContent = f.description;
   $('#cake-price').textContent = fmt(cakePrice(cakes, builder));
@@ -408,7 +520,11 @@ function renderInfo() {
 initTheme();
 renderOffers();
 renderFlavorGrid();
+renderGallery();
+initLightbox();
 renderBuilder();
+$('#photo-prev').onclick = () => showPhoto(photoIdx - 1);
+$('#photo-next').onclick = () => showPhoto(photoIdx + 1);
 renderTreats();
 renderInfo();
 initOrder();

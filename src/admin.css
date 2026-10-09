@@ -68,3 +68,10 @@ table.prices { border-collapse: collapse; width: 100%; min-width: 520px; }
   .tabs button { white-space: nowrap; }
   .item { flex-wrap: wrap; }
 }
+.thumb .swatch { width: 140px; height: 90px; border-radius: 10px; display: grid; place-items: center; font-weight: 700; color: #3b2420; }
+.thumb img { height: 140px; }
+.pick { display: grid; grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); gap: 8px; }
+.pick-item { position: relative; cursor: pointer; }
+.pick-item img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 10px; border: 3px solid transparent; opacity: 0.55; }
+.pick-item input { position: absolute; top: 6px; left: 6px; }
+.pick-item input:checked + img { border-color: var(--brand); opacity: 1; }

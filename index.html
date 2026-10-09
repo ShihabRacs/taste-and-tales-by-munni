@@ -30,6 +30,7 @@
     </a>
     <nav class="nav-links" aria-label="Main">
       <a href="#cakes">Cakes</a>
+      <a href="#gallery">Gallery</a>
       <a href="#treats">Treats</a>
       <a href="#offers">Offers</a>
       <a href="#info">Pickup</a>
@@ -71,6 +72,19 @@
       <div class="flavor-grid" id="flavor-grid"></div>
     </section>
 
+    <section class="section gallery" id="gallery" aria-label="Our creations">
+      <div class="section-head">
+        <p class="script">Baked by Munni</p>
+        <h2>Our creations</h2>
+        <p>Real cakes from Munni's kitchen. Tap one to see it bigger.</p>
+      </div>
+      <div class="carousel">
+        <button type="button" class="arrow prev" id="gal-prev" aria-label="Previous cakes">‹</button>
+        <div class="track" id="gallery-track"></div>
+        <button type="button" class="arrow next" id="gal-next" aria-label="More cakes">›</button>
+      </div>
+    </section>
+
     <section class="section builder-wrap" id="builder">
       <div class="section-head">
         <p class="script">Your cake, your tale</p>
@@ -79,7 +93,15 @@
       </div>
       <div class="builder">
         <figure class="preview card">
-          <div class="preview-img"><img id="cake-img" alt="" width="348" height="178" /></div>
+          <div class="preview-img">
+            <img id="cake-img" alt="" width="960" height="1200" />
+            <div id="cake-swatch" hidden></div>
+            <button type="button" class="arrow prev" id="photo-prev" aria-label="Previous photo">‹</button>
+            <button type="button" class="arrow next" id="photo-next" aria-label="Next photo">›</button>
+            <span class="photo-count" id="photo-count"></span>
+            <span class="photo-cap" id="cake-photo-cap"></span>
+          </div>
+          <div class="thumbs" id="cake-thumbs"></div>
           <figcaption>
             <strong id="cake-name"></strong>
             <span id="cake-desc"></span>
@@ -188,6 +210,19 @@
         <button class="btn btn-primary btn-block" value="done" formnovalidate>Start building</button>
       </div>
     </form>
+  </dialog>
+
+  <dialog id="lightbox" class="lightbox" aria-label="Cake photo">
+    <form method="dialog"><button class="close" aria-label="Close">×</button></form>
+    <figure>
+      <img id="lb-img" alt="" />
+      <figcaption><span id="lb-cap"></span> <small id="lb-count"></small></figcaption>
+    </figure>
+    <div class="lb-actions">
+      <button type="button" class="arrow" id="lb-prev" aria-label="Previous photo">‹</button>
+      <button type="button" class="btn btn-primary" id="lb-want">I want a cake like this</button>
+      <button type="button" class="arrow" id="lb-next" aria-label="Next photo">›</button>
+    </div>
   </dialog>
 
   <div class="toast" id="toast" role="status" hidden></div>

@@ -9,8 +9,15 @@
     "location": "Berlin, Germany",
     "currency": "€",
     "minDaysNotice": 5,
-    "pickupPoints": ["Lichtenberg Bahnhof", "Nöldnerplatz Bahnhof"],
-    "badges": ["100% Halal", "Eggless version available", "Order 5 days in advance"]
+    "pickupPoints": [
+      "Lichtenberg Bahnhof",
+      "Nöldnerplatz Bahnhof"
+    ],
+    "badges": [
+      "100% Halal",
+      "Eggless version available",
+      "Order 5 days in advance"
+    ]
   },
   "coupon": {
     "enabled": true,
@@ -27,61 +34,442 @@
       "eyebrow": "Good day, sweetheart",
       "title": "Soft as vanilla, sweet as a morning tale",
       "subtitle": "Homemade cakes from Berlin, baked fresh for your special day.",
-      "slides": ["vanilla", "lemon", "rasmalai"]
+      "slides": [
+        "09-vanilla-buttercream-with-floral-decorati",
+        "14-pink-buttercream-on-chocolate-with-butte",
+        "17-rasmalai-cake-with-rasmalai-filling",
+        "10-vanilla-cake-with-pineapple-compote-pink",
+        "23-vanilla-buttercream-flowers-on-chocolate",
+        "21-rasmalai-cake-with-fresh-roses"
+      ]
     },
     "evening": {
       "eyebrow": "Good evening",
       "title": "Rich chocolate for cozy evenings",
       "subtitle": "Deep, indulgent layers. Plan tonight, celebrate this week.",
-      "slides": ["chocolate", "coffee", "red-velvet"]
+      "slides": [
+        "04-chocolate-ganache-cake-with-swiss-mering",
+        "01-chocolate-cake-with-chocolate-swiss-meri",
+        "12-chocolate-cake-with-fresh-raspberry-comp",
+        "11-chocolate-buttercream-on-chocolate-cake",
+        "19-red-velvet-with-cream-cheese-frosting-an"
+      ]
     }
   },
   "offers": [
-    { "code": "MORNING10", "label": "Early bird: 10% off cakes ordered before 11am", "percent": 10, "start": "06:00", "end": "11:00", "active": true },
-    { "code": "COCOA15", "label": "Chocolate hour: 15% off every evening 6 to 10pm", "percent": 15, "start": "18:00", "end": "22:00", "active": true }
+    {
+      "code": "MORNING10",
+      "label": "Early bird: 10% off cakes ordered before 11am",
+      "percent": 10,
+      "start": "06:00",
+      "end": "11:00",
+      "active": true
+    },
+    {
+      "code": "COCOA15",
+      "label": "Chocolate hour: 15% off every evening 6 to 10pm",
+      "percent": 15,
+      "start": "18:00",
+      "end": "22:00",
+      "active": true
+    }
   ],
   "cakes": {
     "sizes": [
-      { "id": "5", "label": "5\"", "serves": "4–6" },
-      { "id": "6", "label": "6\"", "serves": "8–10" },
-      { "id": "7", "label": "7\"", "serves": "12–14" },
-      { "id": "8", "label": "8\"", "serves": "16–20" },
-      { "id": "9", "label": "9\"", "serves": "22–26" }
+      {
+        "id": "5",
+        "label": "5\"",
+        "serves": "4–6"
+      },
+      {
+        "id": "6",
+        "label": "6\"",
+        "serves": "8–10"
+      },
+      {
+        "id": "7",
+        "label": "7\"",
+        "serves": "12–14"
+      },
+      {
+        "id": "8",
+        "label": "8\"",
+        "serves": "16–20"
+      },
+      {
+        "id": "9",
+        "label": "9\"",
+        "serves": "22–26"
+      }
     ],
     "flavors": [
-      { "id": "vanilla", "label": "Vanilla", "description": "Vanilla cake with vanilla buttercream", "image": "images/cakes/vanilla.webp", "prices": { "5": 30, "6": 40, "7": 50, "8": 60, "9": 75 } },
-      { "id": "chocolate", "label": "Chocolate", "description": "Chocolate cake with chocolate buttercream", "image": "images/cakes/chocolate.webp", "prices": { "5": 35, "6": 45, "7": 55, "8": 70, "9": 85 } },
-      { "id": "coffee", "label": "Coffee", "description": "Coffee cake with coffee buttercream", "image": "images/cakes/coffee.webp", "prices": { "5": 35, "6": 45, "7": 55, "8": 70, "9": 85 } },
-      { "id": "lemon", "label": "Lemon", "description": "Lemon cake with lemon curd frosting and vanilla buttercream", "image": "images/cakes/lemon.webp", "prices": { "5": 35, "6": 45, "7": 55, "8": 70, "9": 85 } },
-      { "id": "red-velvet", "label": "Classic Red Velvet", "description": "Red velvet with cream cheese frosting and vanilla buttercream", "image": "images/cakes/red-velvet.webp", "prices": { "5": 40, "6": 50, "7": 60, "8": 75, "9": 90 } },
-      { "id": "rasmalai", "label": "Rasmalai", "description": "Rasmalai cake with dairy cream and buttercream", "image": "images/cakes/rasmalai.webp", "prices": { "5": 40, "6": 50, "7": 60, "8": 75, "9": 90 } }
+      {
+        "id": "vanilla",
+        "label": "Vanilla",
+        "description": "Vanilla cake with vanilla buttercream",
+        "image": "09-vanilla-buttercream-with-floral-decorati",
+        "prices": {
+          "5": 30,
+          "6": 40,
+          "7": 50,
+          "8": 60,
+          "9": 75
+        },
+        "color": "#F3E3C8"
+      },
+      {
+        "id": "chocolate",
+        "label": "Chocolate",
+        "description": "Chocolate cake with chocolate buttercream",
+        "image": "11-chocolate-buttercream-on-chocolate-cake",
+        "prices": {
+          "5": 35,
+          "6": 45,
+          "7": 55,
+          "8": 70,
+          "9": 85
+        },
+        "color": "#5A3426"
+      },
+      {
+        "id": "coffee",
+        "label": "Coffee",
+        "description": "Coffee cake with coffee buttercream",
+        "image": "",
+        "prices": {
+          "5": 35,
+          "6": 45,
+          "7": 55,
+          "8": 70,
+          "9": 85
+        },
+        "color": "#B98A62"
+      },
+      {
+        "id": "lemon",
+        "label": "Lemon",
+        "description": "Lemon cake with lemon curd frosting and vanilla buttercream",
+        "image": "",
+        "prices": {
+          "5": 35,
+          "6": 45,
+          "7": 55,
+          "8": 70,
+          "9": 85
+        },
+        "color": "#F4D35E"
+      },
+      {
+        "id": "red-velvet",
+        "label": "Classic Red Velvet",
+        "description": "Red velvet with cream cheese frosting and vanilla buttercream",
+        "image": "18-red-velvet-cheesecake",
+        "prices": {
+          "5": 40,
+          "6": 50,
+          "7": 60,
+          "8": 75,
+          "9": 90
+        },
+        "color": "#A4161A"
+      },
+      {
+        "id": "rasmalai",
+        "label": "Rasmalai",
+        "description": "Rasmalai cake with dairy cream and buttercream",
+        "image": "17-rasmalai-cake-with-rasmalai-filling",
+        "prices": {
+          "5": 40,
+          "6": 50,
+          "7": 60,
+          "8": 75,
+          "9": 90
+        },
+        "color": "#EBD3A0"
+      }
     ],
     "extras": [
-      { "id": "design", "label": "Custom design", "hint": "from 5€, final price confirmed by Munni", "options": [
-        { "id": "none", "label": "None", "price": 0 },
-        { "id": "custom", "label": "Custom design", "price": 5 }
-      ] },
-      { "id": "topper", "label": "Topper", "hint": "from 3–5€", "options": [
-        { "id": "none", "label": "None", "price": 0 },
-        { "id": "simple", "label": "Simple topper", "price": 3 },
-        { "id": "premium", "label": "Premium topper", "price": 5 }
-      ] },
-      { "id": "flowers", "label": "Fresh flowers", "hint": "from 5–10€", "options": [
-        { "id": "none", "label": "None", "price": 0 },
-        { "id": "small", "label": "A few blooms", "price": 5 },
-        { "id": "large", "label": "Full floral crown", "price": 10 }
-      ] },
-      { "id": "eggless", "label": "Eggless", "hint": "available for every flavor", "options": [
-        { "id": "no", "label": "With eggs", "price": 0 },
-        { "id": "yes", "label": "Eggless", "price": 0 }
-      ] }
+      {
+        "id": "design",
+        "label": "Custom design",
+        "hint": "from 5€, final price confirmed by Munni",
+        "options": [
+          {
+            "id": "none",
+            "label": "None",
+            "price": 0
+          },
+          {
+            "id": "custom",
+            "label": "Custom design",
+            "price": 5
+          }
+        ]
+      },
+      {
+        "id": "topper",
+        "label": "Topper",
+        "hint": "from 3–5€",
+        "options": [
+          {
+            "id": "none",
+            "label": "None",
+            "price": 0
+          },
+          {
+            "id": "simple",
+            "label": "Simple topper",
+            "price": 3
+          },
+          {
+            "id": "premium",
+            "label": "Premium topper",
+            "price": 5
+          }
+        ]
+      },
+      {
+        "id": "flowers",
+        "label": "Fresh flowers",
+        "hint": "from 5–10€",
+        "options": [
+          {
+            "id": "none",
+            "label": "None",
+            "price": 0
+          },
+          {
+            "id": "small",
+            "label": "A few blooms",
+            "price": 5
+          },
+          {
+            "id": "large",
+            "label": "Full floral crown",
+            "price": 10
+          }
+        ]
+      },
+      {
+        "id": "eggless",
+        "label": "Eggless",
+        "hint": "available for every flavor",
+        "options": [
+          {
+            "id": "no",
+            "label": "With eggs",
+            "price": 0
+          },
+          {
+            "id": "yes",
+            "label": "Eggless",
+            "price": 0
+          }
+        ]
+      }
     ]
   },
   "treats": [
-    { "id": "muffin-vanilla", "label": "Vanilla Muffin Box (6)", "description": "Vanilla buttercream", "price": 15 },
-    { "id": "muffin-chocolate", "label": "Chocolate Muffin Box (6)", "description": "Chocolate buttercream", "price": 18 },
-    { "id": "muffin-red-velvet", "label": "Red Velvet Muffin Box (6)", "description": "Cream cheese buttercream", "price": 21 },
-    { "id": "brownie", "label": "Brownie Box (6×6)", "description": "9 pieces", "price": 22 },
-    { "id": "patties", "label": "Chicken Patties (5 pcs)", "description": "Savoury", "price": 20 }
-  ]
+    {
+      "id": "muffin-vanilla",
+      "label": "Vanilla Muffin Box (6)",
+      "description": "Vanilla buttercream",
+      "price": 15
+    },
+    {
+      "id": "muffin-chocolate",
+      "label": "Chocolate Muffin Box (6)",
+      "description": "Chocolate buttercream",
+      "price": 18
+    },
+    {
+      "id": "muffin-red-velvet",
+      "label": "Red Velvet Muffin Box (6)",
+      "description": "Cream cheese buttercream",
+      "price": 21
+    },
+    {
+      "id": "brownie",
+      "label": "Brownie Box (6×6)",
+      "description": "9 pieces",
+      "price": 22
+    },
+    {
+      "id": "patties",
+      "label": "Chicken Patties (5 pcs)",
+      "description": "Savoury",
+      "price": 20
+    }
+  ],
+  "gallery": [
+    {
+      "id": "01-chocolate-cake-with-chocolate-swiss-meri",
+      "caption": "Chocolate cake with chocolate Swiss meringue buttercream",
+      "flavor": "chocolate",
+      "image": "images/gallery/01-chocolate-cake-with-chocolate-swiss-meri.webp",
+      "thumb": "images/gallery/01-chocolate-cake-with-chocolate-swiss-meri-sm.webp"
+    },
+    {
+      "id": "02-chocolate-heart-cake-with-lemon-yellow-b",
+      "caption": "Chocolate heart cake with lemon-yellow buttercream and fondant flowers",
+      "flavor": "chocolate",
+      "image": "images/gallery/02-chocolate-heart-cake-with-lemon-yellow-b.webp",
+      "thumb": "images/gallery/02-chocolate-heart-cake-with-lemon-yellow-b-sm.webp"
+    },
+    {
+      "id": "03-rainbow-themed-cake-with-pink-buttercrea",
+      "caption": "Rainbow themed cake with pink buttercream and fondant work",
+      "flavor": null,
+      "image": "images/gallery/03-rainbow-themed-cake-with-pink-buttercrea.webp",
+      "thumb": "images/gallery/03-rainbow-themed-cake-with-pink-buttercrea-sm.webp"
+    },
+    {
+      "id": "04-chocolate-ganache-cake-with-swiss-mering",
+      "caption": "Chocolate ganache cake with Swiss meringue buttercream",
+      "flavor": "chocolate",
+      "image": "images/gallery/04-chocolate-ganache-cake-with-swiss-mering.webp",
+      "thumb": "images/gallery/04-chocolate-ganache-cake-with-swiss-mering-sm.webp"
+    },
+    {
+      "id": "05-chocolate-cake-with-swiss-meringue-butte",
+      "caption": "Chocolate cake with Swiss meringue buttercream",
+      "flavor": "chocolate",
+      "image": "images/gallery/05-chocolate-cake-with-swiss-meringue-butte.webp",
+      "thumb": "images/gallery/05-chocolate-cake-with-swiss-meringue-butte-sm.webp"
+    },
+    {
+      "id": "06-pink-buttercream-on-chocolate-cake",
+      "caption": "Pink buttercream on chocolate cake",
+      "flavor": "chocolate",
+      "image": "images/gallery/06-pink-buttercream-on-chocolate-cake.webp",
+      "thumb": "images/gallery/06-pink-buttercream-on-chocolate-cake-sm.webp"
+    },
+    {
+      "id": "07-vanilla-buttercream-on-chocolate-cake",
+      "caption": "Vanilla buttercream on chocolate cake",
+      "flavor": "chocolate",
+      "image": "images/gallery/07-vanilla-buttercream-on-chocolate-cake.webp",
+      "thumb": "images/gallery/07-vanilla-buttercream-on-chocolate-cake-sm.webp"
+    },
+    {
+      "id": "08-chocolate-cake-with-vanilla-buttercream",
+      "caption": "Chocolate cake with vanilla buttercream and floral piping",
+      "flavor": "chocolate",
+      "image": "images/gallery/08-chocolate-cake-with-vanilla-buttercream.webp",
+      "thumb": "images/gallery/08-chocolate-cake-with-vanilla-buttercream-sm.webp"
+    },
+    {
+      "id": "09-vanilla-buttercream-with-floral-decorati",
+      "caption": "Vanilla buttercream with floral decoration",
+      "flavor": "vanilla",
+      "image": "images/gallery/09-vanilla-buttercream-with-floral-decorati.webp",
+      "thumb": "images/gallery/09-vanilla-buttercream-with-floral-decorati-sm.webp"
+    },
+    {
+      "id": "10-vanilla-cake-with-pineapple-compote-pink",
+      "caption": "Vanilla cake with pineapple compote, pink decoration and fresh roses",
+      "flavor": "vanilla",
+      "image": "images/gallery/10-vanilla-cake-with-pineapple-compote-pink.webp",
+      "thumb": "images/gallery/10-vanilla-cake-with-pineapple-compote-pink-sm.webp"
+    },
+    {
+      "id": "11-chocolate-buttercream-on-chocolate-cake",
+      "caption": "Chocolate buttercream on chocolate cake with ganache drip",
+      "flavor": "chocolate",
+      "image": "images/gallery/11-chocolate-buttercream-on-chocolate-cake.webp",
+      "thumb": "images/gallery/11-chocolate-buttercream-on-chocolate-cake-sm.webp"
+    },
+    {
+      "id": "12-chocolate-cake-with-fresh-raspberry-comp",
+      "caption": "Chocolate cake with fresh raspberry compote",
+      "flavor": "chocolate",
+      "image": "images/gallery/12-chocolate-cake-with-fresh-raspberry-comp.webp",
+      "thumb": "images/gallery/12-chocolate-cake-with-fresh-raspberry-comp-sm.webp"
+    },
+    {
+      "id": "13-chocolate-cake-with-mixed-berry-compote",
+      "caption": "Chocolate cake with mixed berry compote and fresh flowers",
+      "flavor": "chocolate",
+      "image": "images/gallery/13-chocolate-cake-with-mixed-berry-compote.webp",
+      "thumb": "images/gallery/13-chocolate-cake-with-mixed-berry-compote-sm.webp"
+    },
+    {
+      "id": "14-pink-buttercream-on-chocolate-with-butte",
+      "caption": "Pink buttercream on chocolate with buttercream roses",
+      "flavor": "chocolate",
+      "image": "images/gallery/14-pink-buttercream-on-chocolate-with-butte.webp",
+      "thumb": "images/gallery/14-pink-buttercream-on-chocolate-with-butte-sm.webp"
+    },
+    {
+      "id": "15-vintage-pink-buttercream-on-chocolate-ca",
+      "caption": "Vintage pink buttercream on chocolate cake",
+      "flavor": "chocolate",
+      "image": "images/gallery/15-vintage-pink-buttercream-on-chocolate-ca.webp",
+      "thumb": "images/gallery/15-vintage-pink-buttercream-on-chocolate-ca-sm.webp"
+    },
+    {
+      "id": "16-pink-heart-cake-with-chocolate-sponge",
+      "caption": "Pink heart cake with chocolate sponge",
+      "flavor": "chocolate",
+      "image": "images/gallery/16-pink-heart-cake-with-chocolate-sponge.webp",
+      "thumb": "images/gallery/16-pink-heart-cake-with-chocolate-sponge-sm.webp"
+    },
+    {
+      "id": "17-rasmalai-cake-with-rasmalai-filling",
+      "caption": "Rasmalai cake with rasmalai filling",
+      "flavor": "rasmalai",
+      "image": "images/gallery/17-rasmalai-cake-with-rasmalai-filling.webp",
+      "thumb": "images/gallery/17-rasmalai-cake-with-rasmalai-filling-sm.webp"
+    },
+    {
+      "id": "18-red-velvet-cheesecake",
+      "caption": "Red velvet cheesecake",
+      "flavor": "red-velvet",
+      "image": "images/gallery/18-red-velvet-cheesecake.webp",
+      "thumb": "images/gallery/18-red-velvet-cheesecake-sm.webp"
+    },
+    {
+      "id": "19-red-velvet-with-cream-cheese-frosting-an",
+      "caption": "Red velvet with cream cheese frosting and ganache drip",
+      "flavor": "red-velvet",
+      "image": "images/gallery/19-red-velvet-with-cream-cheese-frosting-an.webp",
+      "thumb": "images/gallery/19-red-velvet-with-cream-cheese-frosting-an-sm.webp"
+    },
+    {
+      "id": "20-themed-birthday-cake-with-custom-colors",
+      "caption": "Themed birthday cake with custom colors",
+      "flavor": null,
+      "image": "images/gallery/20-themed-birthday-cake-with-custom-colors.webp",
+      "thumb": "images/gallery/20-themed-birthday-cake-with-custom-colors-sm.webp"
+    },
+    {
+      "id": "21-rasmalai-cake-with-fresh-roses",
+      "caption": "Rasmalai cake with fresh roses",
+      "flavor": "rasmalai",
+      "image": "images/gallery/21-rasmalai-cake-with-fresh-roses.webp",
+      "thumb": "images/gallery/21-rasmalai-cake-with-fresh-roses-sm.webp"
+    },
+    {
+      "id": "22-two-tier-vanilla-themed-cake",
+      "caption": "Two-tier vanilla themed cake",
+      "flavor": "vanilla",
+      "image": "images/gallery/22-two-tier-vanilla-themed-cake.webp",
+      "thumb": "images/gallery/22-two-tier-vanilla-themed-cake-sm.webp"
+    },
+    {
+      "id": "23-vanilla-buttercream-flowers-on-chocolate",
+      "caption": "Vanilla buttercream flowers on chocolate cake",
+      "flavor": "chocolate",
+      "image": "images/gallery/23-vanilla-buttercream-flowers-on-chocolate.webp",
+      "thumb": "images/gallery/23-vanilla-buttercream-flowers-on-chocolate-sm.webp"
+    },
+    {
+      "id": "24-vanilla-on-vanilla-with-custom-themed-de",
+      "caption": "Vanilla on vanilla with custom themed decoration",
+      "flavor": "vanilla",
+      "image": "images/gallery/24-vanilla-on-vanilla-with-custom-themed-de.webp",
+      "thumb": "images/gallery/24-vanilla-on-vanilla-with-custom-themed-de-sm.webp"
+    }
+  ],
+  "galleryTitle": "Our creations"
 }

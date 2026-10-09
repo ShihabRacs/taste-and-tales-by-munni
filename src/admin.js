@@ -2,7 +2,7 @@ import './admin.css';
 import { personalCode } from './lib.js';
 
 const CONFIG_PATH = 'src/data/site.json';
-const IMAGE_DIR = 'public/images/cakes';
+const IMAGE_DIR = 'public/images/gallery';
 const $ = (s, r = document) => r.querySelector(s);
 
 const ls = {
@@ -162,28 +162,37 @@ function moveBtns(arr, i, redraw) {
 const slug = (s) => String(s).toLowerCase().normalize('NFKD').replace(/[^\w]+/g, '-').replace(/^-|-$/g, '') || `item-${Date.now().toString(36)}`;
 const card = (title, ...kids) => el('section', { class: 'card' }, title ? el('h2', {}, title) : null, ...kids);
 const previews = {}; // freshly uploaded photos are not deployed yet
-const imgUrl = (p) => previews[p] || (/^(https?:|data:)/.test(p) ? p : `${import.meta.env.BASE_URL}${p}`);
+const imgUrl = (p) => previews[p] || (/^(https?:|data:)/.test(p) ? p : `../${p}`);
+const photoById = (id) => (cfg.gallery || []).find((x) => x.id === id);
 
 /* ---------- Image upload (resized in the browser to keep the site fast) ---------- */
 
-async function resizeToWebp(file, maxW = 900) {
+async function resizeToWebp(file, maxW) {
   const bmp = await createImageBitmap(file);
-  const scale = Math.min(1, maxW / bmp.width);
-  const c = Object.assign(document.createElement('canvas'), { width: Math.round(bmp.width * scale), height: Math.round(bmp.height * scale) });
-  c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height);
-  const blob = await new Promise((r) => c.toBlob(r, 'image/webp', 0.85));
+  // Crop to 4:5 portrait so every photo lines up in the carousels
+  let sw = bmp.width, sh = bmp.height, sx = 0, sy = 0;
+  if (sw / sh > 4 / 5) { sw = Math.round(sh * 4 / 5); sx = Math.round((bmp.width - sw) / 2); }
+  else { sh = Math.round(sw * 5 / 4); sy = Math.round((bmp.height - sh) / 2); }
+  const w = Math.min(maxW, sw), h = Math.round(w * 5 / 4);
+  const c = Object.assign(document.createElement('canvas'), { width: w, height: h });
+  c.getContext('2d').drawImage(bmp, sx, sy, sw, sh, 0, 0, w, h);
+  const blob = await new Promise((r) => c.toBlob(r, 'image/webp', 0.8));
   return new Uint8Array(await blob.arrayBuffer());
 }
 
-async function uploadImage(file, name) {
+async function uploadPhoto(file, caption) {
   setStatus('Uploading photo…', 'busy');
-  const bytes = await resizeToWebp(file);
-  const path = `${IMAGE_DIR}/${slug(name)}-${Date.now().toString(36)}.webp`;
-  await putFile(path, bytesToB64(bytes), `Add photo for ${name}`, null);
-  setStatus('Photo uploaded. Click Save & publish to use it.', 'ok');
-  const rel = path.replace(/^public\//, '');
-  previews[rel] = URL.createObjectURL(new Blob([bytes], { type: 'image/webp' }));
-  return rel;
+  const id = `${slug(caption).slice(0, 40)}-${Date.now().toString(36)}`;
+  const item = { id, caption, flavor: null };
+  for (const [key, suffix, w] of [['image', '', 960], ['thumb', '-sm', 480]]) {
+    const bytes = await resizeToWebp(file, w);
+    const path = `${IMAGE_DIR}/${id}${suffix}.webp`;
+    await putFile(path, bytesToB64(bytes), `Add photo: ${caption}`, null);
+    item[key] = path.replace(/^public\//, '');
+    previews[item[key]] = URL.createObjectURL(new Blob([bytes], { type: 'image/webp' }));
+  }
+  setStatus('Photo uploaded. Click Save & publish to show it on the site.', 'ok');
+  return item;
 }
 
 /* ---------- Tabs ---------- */
@@ -223,13 +232,12 @@ const tabs = {
       card('Flavors',
         ...flavors.map((f, i) => el('div', { class: 'item' },
           el('div', { class: 'thumb' },
-            el('img', { src: imgUrl(f.image), alt: '' }),
-            el('label', { class: 'btn ghost sm' }, 'Change photo',
-              el('input', { type: 'file', accept: 'image/*', hidden: true, onchange: async (e) => {
-                const file = e.target.files[0];
-                if (!file) return;
-                try { f.image = await uploadImage(file, f.label); markDirty(); redraw(); } catch (err) { setStatus(`Upload failed: ${err.message}`, 'err'); }
-              } }))),
+            photoById(f.image) ? el('img', { src: imgUrl(photoById(f.image).thumb), alt: '' }) : el('div', { class: 'swatch', style: `background:${f.color || '#F3E3C8'}` }, 'No photo'),
+            el('label', { class: 'field' }, 'Main photo',
+              el('select', { onchange: (e) => { f.image = e.target.value; markDirty(); redraw(); } },
+                el('option', { value: '' }, 'No photo'),
+                ...(cfg.gallery || []).map((p) => el('option', { value: p.id, selected: p.id === f.image }, p.caption)))),
+            field(f, 'color', 'Color (if no photo)', 'color')),
           el('div', { class: 'grow' },
             field(f, 'label', 'Name', 'text', { after: () => (table.rows[i + 1].cells[0].textContent = f.label) }),
             textArea(f, 'description', 'Description')),
@@ -237,11 +245,10 @@ const tabs = {
             el('button', { class: 'icon danger', title: 'Delete flavor', onclick: () => {
               if (!confirm(`Delete ${f.label}?`)) return;
               flavors.splice(i, 1);
-              for (const t of ['day', 'evening']) cfg.hero[t].slides = cfg.hero[t].slides.filter((x) => x !== f.id);
               markDirty(); redraw();
             } }, '🗑')))),
         el('button', { class: 'btn ghost', onclick: () => {
-          flavors.push({ id: `flavor-${Date.now().toString(36)}`, label: 'New flavor', description: '', image: flavors[0]?.image || '', prices: Object.fromEntries(sizes.map((s) => [s.id, 0])) });
+          flavors.push({ id: `flavor-${Date.now().toString(36)}`, label: 'New flavor', description: '', image: '', color: '#F3E3C8', prices: Object.fromEntries(sizes.map((s) => [s.id, 0])) });
           markDirty(); redraw();
         } }, '+ Add flavor')),
       card('Sizes',
@@ -344,18 +351,60 @@ const tabs = {
 
   hero: ['Day & evening', () => {
     const h = cfg.hero;
-    const slides = (t) => el('div', { class: 'field' }, el('span', {}, 'Cakes in the slideshow'),
-      el('div', { class: 'row wrap' }, ...cfg.cakes.flavors.map((f) => el('label', { class: 'check' },
-        el('input', { type: 'checkbox', checked: h[t].slides.includes(f.id), onchange: (e) => {
-          h[t].slides = e.target.checked ? [...h[t].slides, f.id] : h[t].slides.filter((x) => x !== f.id);
+    const slides = (t) => el('div', { class: 'field' }, el('span', {}, 'Photos in the slideshow'),
+      el('div', { class: 'pick' }, ...(cfg.gallery || []).map((p) => el('label', { class: 'pick-item', title: p.caption },
+        el('input', { type: 'checkbox', checked: h[t].slides.includes(p.id), onchange: (e) => {
+          h[t].slides = e.target.checked ? [...h[t].slides, p.id] : h[t].slides.filter((x) => x !== p.id);
           markDirty();
-        } }), ' ', f.label))));
+        } }), el('img', { src: imgUrl(p.thumb), alt: p.caption })))));
     return [
       card('When does it switch?',
         el('p', { class: 'hint' }, 'Day uses the pink vanilla look, evening uses the chocolate look.'),
         el('div', { class: 'row wrap' }, field(h, 'dayStartsAt', 'Day starts', 'time'), field(h, 'eveningStartsAt', 'Evening starts', 'time'))),
       ...['day', 'evening'].map((t) => card(t === 'day' ? '☀ Day (vanilla)' : '☾ Evening (chocolate)',
         field(h[t], 'eyebrow', 'Small greeting'), field(h[t], 'title', 'Headline'), textArea(h[t], 'subtitle', 'Subtitle'), slides(t))),
+    ];
+  }],
+
+  gallery: ['Gallery', () => {
+    cfg.gallery ||= [];
+    const list = cfg.gallery;
+    const redraw = () => render();
+    const cap = el('input', { placeholder: 'e.g. Chocolate cake with fresh raspberries' });
+    const remove = (i) => {
+      const p = list[i];
+      if (!confirm(`Remove "${p.caption}" from the website?`)) return;
+      list.splice(i, 1);
+      for (const t of ['day', 'evening']) cfg.hero[t].slides = cfg.hero[t].slides.filter((x) => x !== p.id);
+      for (const f of cfg.cakes.flavors) if (f.image === p.id) f.image = '';
+      markDirty(); redraw();
+    };
+    return [
+      card('Add a photo',
+        el('p', { class: 'hint' }, 'Photos are cropped to portrait and resized automatically, so the site stays fast.'),
+        el('div', { class: 'row wrap' },
+          el('label', { class: 'field' }, 'Caption', cap),
+          el('label', { class: 'btn' }, 'Choose photo…',
+            el('input', { type: 'file', accept: 'image/*', hidden: true, onchange: async (e) => {
+              const file = e.target.files[0];
+              if (!file) return;
+              try {
+                const item = await uploadPhoto(file, cap.value.trim() || file.name.replace(/\.[^.]+$/, ''));
+                list.unshift(item); markDirty(); redraw();
+              } catch (err) { setStatus(`Upload failed: ${err.message}`, 'err'); }
+            } })))),
+      card(`Photos (${list.length})`,
+        el('p', { class: 'hint' }, 'Tag a flavor to show the photo in the cake builder when that flavor is picked.'),
+        ...list.map((p, i) => el('div', { class: 'item' },
+          el('div', { class: 'thumb' }, el('img', { src: imgUrl(p.thumb), alt: '' })),
+          el('div', { class: 'grow' },
+            field(p, 'caption', 'Caption'),
+            el('label', { class: 'field' }, 'Flavor',
+              el('select', { onchange: (e) => { p.flavor = e.target.value || null; markDirty(); } },
+                el('option', { value: '' }, 'Not tagged'),
+                ...cfg.cakes.flavors.map((f) => el('option', { value: f.id, selected: f.id === p.flavor }, f.label))))),
+          el('div', { class: 'tools' }, ...moveBtns(list, i, redraw),
+            el('button', { class: 'icon danger', title: 'Remove photo', onclick: () => remove(i) }, '🗑'))))),
     ];
   }],
 
