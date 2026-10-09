@@ -11,7 +11,8 @@
     "minDaysNotice": 5,
     "pickupPoints": [
       "Lichtenberg Bahnhof",
-      "Nöldnerplatz Bahnhof"
+      "Nöldnerplatz Bahnhof",
+      "Alexanderplatz Bahnhof"
     ],
     "badges": [
       "100% Halal",

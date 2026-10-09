@@ -1,9 +1,9 @@
 # Taste and Tales by Munni
 
-Homemade cakes in Berlin. A fast static website built with Vite and hosted free on GitHub Pages.
+Homemade cakes in Berlin. A fast static website built with Vite and hosted free on Vercel.
 
-- **Website:** https://shihabracs.github.io/taste-and-tales-by-munni/
-- **Admin:** https://shihabracs.github.io/taste-and-tales-by-munni/admin/
+- **Website:** https://tasteandtalesbymunni.vercel.app/
+- **Admin:** https://tasteandtalesbymunni.vercel.app/admin
 
 ## Features
 
@@ -19,21 +19,21 @@ Homemade cakes in Berlin. A fast static website built with Vite and hosted free 
 ## How it works
 
 All content lives in [`src/data/site.json`](src/data/site.json). The admin panel edits that file through the GitHub API.
-Every change to `main` is built and deployed automatically by [GitHub Actions](.github/workflows/deploy.yml), usually within a minute.
+Every change to `main` is built and deployed automatically by Vercel, usually within a minute.
 
 ### Admin sign-in
 
-Add three repository secrets under **Settings → Secrets and variables → Actions → New repository secret**:
+Add three environment variables in **Vercel → tasteandtalesbymunni → Settings → Environment Variables** (environment: Production, mark them **Sensitive**):
 
-| Secret | Value |
+| Name | Value |
 | --- | --- |
 | `ADMIN_USERNAME` | the admin username |
 | `ADMIN_PASSWORD` | a long password (it protects the token below, so make it strong) |
-| `ADMIN_GITHUB_TOKEN` | a fine-grained token: **Only select repositories** → `taste-and-tales-by-munni`, permissions **Contents: Read and write** and **Actions: Read-only** ([create one](https://github.com/settings/personal-access-tokens/new)) |
+| `ADMIN_GITHUB_TOKEN` | a fine-grained token: **Only select repositories** → `taste-and-tales-by-munni`, permissions **Contents: Read and write** and **Commit statuses: Read-only** ([create one](https://github.com/settings/personal-access-tokens/new)) |
 
-Then re-run the Deploy workflow (or push any change). During the build the token is encrypted with a key derived from the username and password (PBKDF2, 600,000 rounds → AES-GCM); only the encrypted copy is published. Signing in with the right username and password unlocks it in the browser.
+Then redeploy (Deployments → ⋯ → Redeploy, or push any change). During the build the token is encrypted with a key derived from the username and password (PBKDF2, 600,000 rounds → AES-GCM); only the encrypted copy is published. Signing in with the right username and password unlocks it in the browser.
 
-To change the password, update the secrets and re-run Deploy. Without the secrets, the admin page asks for a GitHub token instead.
+To change the password, update the variable and redeploy. Without these variables, the admin page asks for a GitHub token instead.
 
 ### Personal coupons
 

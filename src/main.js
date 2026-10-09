@@ -565,7 +565,6 @@ function renderInfo() {
     s.facebook && el('a', { href: s.facebook, target: '_blank', rel: 'noopener' }, 'Facebook'),
     s.messenger && el('a', { href: `https://m.me/${s.messenger}`, target: '_blank', rel: 'noopener' }, 'Messenger'),
     s.instagram && el('a', { href: `https://instagram.com/${s.instagram}`, target: '_blank', rel: 'noopener' }, `Instagram @${s.instagram}`),
-    s.whatsapp && el('a', { href: `https://wa.me/${s.whatsapp.replace(/\D/g, '')}`, target: '_blank', rel: 'noopener' }, `WhatsApp ${s.whatsapp}`),
     s.location && el('span', {}, `📍 ${s.location}`),
   ].filter(Boolean);
   $('#contact-links').replaceChildren(...links.map((a) => el('li', {}, a)));

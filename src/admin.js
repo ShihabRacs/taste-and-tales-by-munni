@@ -100,21 +100,19 @@ async function publish() {
   }
 }
 
+// Vercel reports each deploy back to GitHub as a commit status ("Vercel")
 async function watchDeploy(commitSha) {
   setStatus('Saved. Website is updating…', 'busy');
   for (let i = 0; i < 40; i++) {
-    await new Promise((r) => setTimeout(r, 8000));
+    await new Promise((r) => setTimeout(r, 6000));
     try {
-      const { workflow_runs: runs } = await api(`/actions/runs?head_sha=${commitSha}&per_page=1`);
-      const run = runs?.[0];
-      if (run?.status === 'completed') {
-        return run.conclusion === 'success'
-          ? setStatus('Live on the website ✓', 'ok')
-          : setStatus(`Deploy ${run.conclusion}. Open GitHub Actions to see why.`, 'err');
-      }
-    } catch { /* token may lack Actions read; just stop polling */ return setStatus('Saved. The site updates in about a minute.', 'ok'); }
+      const { statuses = [] } = await api(`/commits/${commitSha}/status`);
+      const v = statuses.find((x) => /vercel/i.test(x.context)) || statuses[0];
+      if (v?.state === 'success') return setStatus('Live on the website ✓', 'ok');
+      if (v && v.state !== 'pending') return setStatus('The website update failed. Open the Vercel dashboard to see why.', 'err');
+    } catch { return setStatus('Saved. The site updates in about a minute.', 'ok'); }
   }
-  setStatus('Saved. Deploy is taking longer than usual.', 'busy');
+  setStatus('Saved. The update is taking longer than usual.', 'busy');
 }
 
 /* ---------- Form helpers ---------- */
