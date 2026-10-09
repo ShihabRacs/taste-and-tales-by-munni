@@ -169,9 +169,6 @@
           "10": null
         },
         "color": "#A4161A",
-        "defaults": {
-          "frosting": "cream-cheese"
-        },
         "fixed": {
           "filling": "Cream cheese filling"
         }
@@ -225,11 +222,6 @@
           {
             "id": "lemon-smbc",
             "label": "Lemon-yellow Swiss meringue buttercream",
-            "price": 0
-          },
-          {
-            "id": "cream-cheese",
-            "label": "Cream cheese frosting",
             "price": 0
           }
         ]
@@ -611,9 +603,7 @@
       "flavor": "red-velvet",
       "image": "images/gallery/18-red-velvet-cheesecake.webp",
       "thumb": "images/gallery/18-red-velvet-cheesecake-sm.webp",
-      "match": {
-        "frosting": "cream-cheese"
-      },
+      "match": {},
       "hidden": true
     },
     {
@@ -623,7 +613,6 @@
       "image": "images/gallery/19-red-velvet-with-cream-cheese-frosting-an.webp",
       "thumb": "images/gallery/19-red-velvet-with-cream-cheese-frosting-an-sm.webp",
       "match": {
-        "frosting": "cream-cheese",
         "decoration": "drip"
       }
     },
