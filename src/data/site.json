@@ -260,14 +260,15 @@
           {
             "id": "custom",
             "label": "Custom design",
-            "price": 5
+            "price": 5,
+            "from": true
           }
         ]
       },
       {
         "id": "filling",
         "label": "Filling",
-        "hint": "compotes +5€ · rasmalai filling +3€",
+        "hint": "compotes from 5€ · rasmalai filling from 3€",
         "options": [
           {
             "id": "classic",
@@ -277,22 +278,26 @@
           {
             "id": "raspberry",
             "label": "Fresh raspberry compote",
-            "price": 5
+            "price": 5,
+            "from": true
           },
           {
             "id": "mixed-berry",
             "label": "Mixed berry compote",
-            "price": 5
+            "price": 5,
+            "from": true
           },
           {
             "id": "pineapple",
             "label": "Pineapple compote",
-            "price": 5
+            "price": 5,
+            "from": true
           },
           {
             "id": "rasmalai",
             "label": "Rasmalai filling",
-            "price": 3
+            "price": 3,
+            "from": true
           }
         ],
         "showIf": {
@@ -302,7 +307,7 @@
       {
         "id": "decoration",
         "label": "Decoration style",
-        "hint": "drip included · full ganache top +3€",
+        "hint": "from 5€ · classic piping and ganache drip included",
         "options": [
           {
             "id": "classic",
@@ -312,7 +317,8 @@
           {
             "id": "floral",
             "label": "Buttercream flowers",
-            "price": 0
+            "price": 5,
+            "from": true
           },
           {
             "id": "drip",
@@ -322,27 +328,32 @@
           {
             "id": "ganache-top",
             "label": "Full top decoration with ganache",
-            "price": 3
+            "price": 5,
+            "from": true
           },
           {
             "id": "nuts",
             "label": "Walnut topping",
-            "price": 0
+            "price": 5,
+            "from": true
           },
           {
             "id": "vintage",
             "label": "Vintage piping",
-            "price": 0
+            "price": 5,
+            "from": true
           },
           {
             "id": "fondant",
             "label": "Fondant work",
-            "price": 0
+            "price": 5,
+            "from": true
           },
           {
             "id": "themed",
             "label": "Themed (non-edible decoration)",
-            "price": 0
+            "price": 5,
+            "from": true
           }
         ],
         "showIf": {

@@ -300,6 +300,7 @@ const tabs = {
         el('p', { class: 'hint' }, 'The first choice is the default.'),
         ...g.options.map((o, oi) => el('div', { class: 'row wrap sub' },
           field(o, 'label', 'Choice'), field(o, 'price', `Price (${cfg.site.currency})`, 'number', { min: 0, step: '0.5' }),
+          field(o, 'from', 'Starting price (can be more)', 'checkbox'),
           ...moveBtns(g.options, oi, redraw),
           el('button', { class: 'icon danger', title: 'Delete', onclick: () => { g.options.splice(oi, 1); markDirty(); redraw(); } }, '×'))),
         el('button', { class: 'btn ghost sm', onclick: () => { g.options.push({ id: `o${Date.now().toString(36)}`, label: 'New choice', price: 0 }); markDirty(); redraw(); } }, '+ Add choice'))),

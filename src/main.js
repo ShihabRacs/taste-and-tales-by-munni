@@ -296,7 +296,7 @@ function renderBuilder() {
     el('fieldset', { class: g.showIf ? 'sub' : null }, el('legend', {}, g.label, g.hint ? el('small', {}, ` · ${g.hint}`) : null),
       el('div', { class: 'chips' }, ...g.options.map((o) =>
         chip(`x-${g.id}`, o.id, builder.extras[g.id] === o.id, () => { builder.extras[g.id] = o.id; hasChildren(g) ? renderBuilder() : updatePreview(); },
-          o.label, o.price ? el('small', {}, `+${fmt(o.price)}`) : null))))));
+          o.label, o.price ? el('small', {}, `${o.from ? 'from ' : ''}+${fmt(o.price)}`) : null))))));
   updatePreview();
 }
 
@@ -338,7 +338,7 @@ function updatePreview() {
   $('#cake-name').textContent = `${f.label} · ${sizeById(builder.size)?.label || ''}`;
   $('#cake-desc').textContent = f.description;
   const price = cakePrice(cakes, builder);
-  $('#cake-price').textContent = price == null ? 'On request' : fmt(price);
+  $('#cake-price').textContent = price == null ? 'On request' : (isFromCake(builder) ? 'from ' : '') + fmt(price);
 }
 
 function setFlavor(id) {
@@ -350,7 +350,7 @@ function cakeLine(c) {
   const f = flavorById(c.flavor);
   const parts = cakes.extras.map((g) => {
     const o = g.options.find((x) => x.id === c.extras[g.id]);
-    return o && o.id !== g.options[0].id ? (o.price ? `${o.label} (+${fmt(o.price)})` : o.label) : null;
+    return o && o.id !== g.options[0].id ? (o.price ? `${o.label} (${o.from ? 'from ' : ''}+${fmt(o.price)})` : o.label) : null;
   }).filter(Boolean);
   if (c.message) parts.push(`Message: "${c.message}"`);
   return { title: `${f?.label || c.flavor} cake, ${sizeById(c.size)?.label || c.size}`, detail: parts.join(' · ') };
@@ -399,6 +399,9 @@ const saveCart = () => store.set('tt-cart', cart);
 let applied = null; // { code, percent, label, kind }
 
 const subtotal = () => cart.cakes.reduce((s, c) => s + (cakePrice(cakes, c) ?? 0), 0) + treatsPrice(treats, cart.treats);
+// Any chosen option with a starting price ("from 3€") makes the total a starting price
+const isFromCake = (c) => cakes.extras.some((g) => g.options.find((o) => o.id === c.extras?.[g.id])?.from);
+const hasFrom = () => cart.cakes.some(isFromCake);
 const hasOnRequest = () => cart.cakes.some((c) => cakePrice(cakes, c) == null);
 
 function renderCart() {
@@ -407,7 +410,7 @@ function renderCart() {
       const { title, detail } = cakeLine(c);
       return el('li', {},
         el('span', {}, el('strong', {}, title), detail ? el('small', {}, detail) : null),
-        el('span', { class: 'amt' }, fmt(cakePrice(cakes, c))),
+        el('span', { class: 'amt' }, (isFromCake(c) ? 'from ' : '') + fmt(cakePrice(cakes, c))),
         el('button', { class: 'x', type: 'button', 'aria-label': `Remove ${title}`, onclick: () => { cart.cakes.splice(i, 1); saveCart(); renderCart(); } }, '×'));
     }),
     ...treats.filter((t) => cart.treats[t.id]).map((t) =>
@@ -426,7 +429,8 @@ function renderCart() {
   const disc = applied ? Math.round(sub * applied.percent) / 100 : 0;
   $('#subtotal').textContent = fmt(sub);
   $('#discount').textContent = disc ? `−${fmt(disc)}` : fmt(0);
-  $('#total').textContent = fmt(sub - disc) + (hasOnRequest() ? ' + price on request' : '');
+  $('#total').textContent = (hasFrom() ? 'from ' : '') + fmt(sub - disc) + (hasOnRequest() ? ' + price on request' : '');
+  $('#final-note').hidden = !hasFrom();
 }
 
 /* ---------- Codes ---------- */
@@ -466,7 +470,7 @@ function orderText(data) {
   const L = [`Hello Munni! I'd like to order from ${cfg.site.name}:`, ''];
   for (const c of cart.cakes) {
     const { title, detail } = cakeLine(c);
-    L.push(`🎂 ${title}: ${fmt(cakePrice(cakes, c))}`);
+    L.push(`🎂 ${title}: ${isFromCake(c) ? 'from ' : ''}${fmt(cakePrice(cakes, c))}`);
     if (detail) L.push(`   ${detail}`);
   }
   for (const t of treats) if (cart.treats[t.id]) L.push(`🧁 ${cart.treats[t.id]} × ${t.label}: ${fmt(t.price * cart.treats[t.id])}`);
@@ -474,9 +478,10 @@ function orderText(data) {
   L.push('', `Subtotal: ${fmt(sub)}`);
   if (applied) {
     const d = Math.round(sub * applied.percent) / 100;
-    L.push(`Code ${applied.code} (${applied.percent}% off): −${fmt(d)}`, `Total: ${fmt(sub - d)}`);
-  } else L.push(`Total: ${fmt(sub)}`);
+    L.push(`Code ${applied.code} (${applied.percent}% off): −${fmt(d)}`, `Total: ${hasFrom() ? 'from ' : ''}${fmt(sub - d)}`);
+  } else L.push(`Total: ${hasFrom() ? 'from ' : ''}${fmt(sub)}`);
   if (hasOnRequest()) L.push('(plus the cake priced on request)');
+  if (hasFrom()) L.push('(starting price, final price to be confirmed by Munni)');
   L.push('', `Name: ${data.name}`, `Phone: ${data.phone}`, `Email: ${data.email}`, `Pickup: ${data.date} at ${data.pickup}`);
   if (data.notes) L.push(`Notes: ${data.notes}`);
   return L.join('\n');
