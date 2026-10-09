@@ -248,18 +248,12 @@
       {
         "id": "filling",
         "label": "Filling",
-        "hint": "special fillings +3€ · berry fillings from 5€",
+        "hint": "mixed berry compote from 5€ · pineapple compote +3€",
         "options": [
           {
             "id": "classic",
             "label": "As on the menu",
             "price": 0
-          },
-          {
-            "id": "raspberry",
-            "label": "Fresh raspberry compote",
-            "price": 5,
-            "from": true
           },
           {
             "id": "mixed-berry",
@@ -539,8 +533,7 @@
       "image": "images/gallery/12-chocolate-cake-with-fresh-raspberry-comp.webp",
       "thumb": "images/gallery/12-chocolate-cake-with-fresh-raspberry-comp-sm.webp",
       "match": {
-        "frosting": "choc-smbc",
-        "filling": "raspberry"
+        "frosting": "choc-smbc"
       }
     },
     {
