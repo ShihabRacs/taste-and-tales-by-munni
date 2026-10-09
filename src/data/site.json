@@ -20,7 +20,7 @@
       "Order 5 days in advance"
     ],
     "pickupFrom": "13:30",
-    "pickupUntil": "20:00",
+    "pickupUntil": "17:30",
     "pickupSlotMinutes": 30
   },
   "coupon": {
