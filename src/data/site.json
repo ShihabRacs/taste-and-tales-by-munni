@@ -185,6 +185,9 @@
         "color": "#A4161A",
         "defaults": {
           "frosting": "cream-cheese"
+        },
+        "fixed": {
+          "filling": "Cream cheese filling"
         }
       },
       {
@@ -200,7 +203,10 @@
           "9": 90,
           "10": null
         },
-        "color": "#EBD3A0"
+        "color": "#EBD3A0",
+        "fixed": {
+          "filling": "Rasmalai filling"
+        }
       }
     ],
     "extras": [
@@ -291,11 +297,7 @@
         ],
         "showIf": {
           "design": "custom"
-        },
-        "hideFor": [
-          "rasmalai",
-          "red-velvet"
-        ]
+        }
       },
       {
         "id": "decoration",

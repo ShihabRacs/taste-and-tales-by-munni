@@ -294,8 +294,13 @@ function renderBuilder() {
     (!g.showIf || Object.entries(g.showIf).every(([k, v]) => builder.extras[k] === v));
   for (const g of cakes.extras) if (!visible(g)) builder.extras[g.id] = g.options[0]?.id;
   const hasChildren = (g) => cakes.extras.some((x) => x.showIf && g.id in x.showIf);
-  $('#opt-extras').replaceChildren(...cakes.extras.filter(visible).map((g) =>
-    el('fieldset', { class: g.showIf ? 'sub' : null }, el('legend', {}, g.label, g.hint ? el('small', {}, ` · ${g.hint}`) : null),
+  // A flavor can fix a group to one included choice (e.g. red velvet → cream cheese filling)
+  const fixed = f?.fixed || {};
+  for (const id of Object.keys(fixed)) builder.extras[id] = cakes.extras.find((g) => g.id === id)?.options[0]?.id;
+  $('#opt-extras').replaceChildren(...cakes.extras.filter((g) => fixed[g.id] || visible(g)).map((g) => fixed[g.id]
+    ? el('fieldset', {}, el('legend', {}, g.label, el('small', {}, ' · included with this cake')),
+        el('div', { class: 'chips' }, chip(`x-${g.id}`, 'fixed', true, null, fixed[g.id], el('small', {}, 'included'))))
+    : el('fieldset', { class: g.showIf ? 'sub' : null }, el('legend', {}, g.label, g.hint ? el('small', {}, ` · ${g.hint}`) : null),
       el('div', { class: 'chips' }, ...g.options.map((o) =>
         chip(`x-${g.id}`, o.id, builder.extras[g.id] === o.id, () => { builder.extras[g.id] = o.id; hasChildren(g) ? renderBuilder() : updatePreview(); },
           o.label, o.price ? el('small', {}, `${o.from ? 'from ' : ''}+${fmt(o.price)}`) : null))))));
@@ -362,6 +367,7 @@ function cakeLine(c) {
     const o = g.options.find((x) => x.id === c.extras[g.id]);
     return o && o.id !== g.options[0].id ? (o.price ? `${o.label} (${o.from ? 'from ' : ''}+${fmt(o.price)})` : o.label) : null;
   }).filter(Boolean);
+  for (const v of Object.values(f?.fixed || {})) parts.unshift(`${v} (included)`);
   if (c.message) parts.push(`Message: "${c.message}"`);
   return { title: `${f?.label || c.flavor} cake, ${sizeById(c.size)?.label || c.size}`, detail: parts.join(' · ') };
 }
