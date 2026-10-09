@@ -36,6 +36,7 @@
       "subtitle": "Homemade cakes from Berlin, baked fresh for your special day.",
       "slides": [
         "09-vanilla-buttercream-with-floral-decorati",
+        "26-lemon-cake-with-lemon-curd",
         "14-pink-buttercream-on-chocolate-with-butte",
         "17-rasmalai-cake-with-rasmalai-filling",
         "10-vanilla-cake-with-pineapple-compote-pink",
@@ -157,7 +158,7 @@
         "id": "lemon",
         "label": "Lemon",
         "description": "Lemon cake with lemon curd frosting and vanilla buttercream",
-        "image": "",
+        "image": "26-lemon-cake-with-lemon-curd",
         "prices": {
           "5": 35,
           "6": 45,
@@ -696,6 +697,17 @@
       "thumb": "images/gallery/25-coffee-cake-with-walnut-topping-sm.webp",
       "match": {
         "decoration": "nuts"
+      }
+    },
+    {
+      "id": "26-lemon-cake-with-lemon-curd",
+      "caption": "Lemon cake with lemon curd filling and classic piping",
+      "flavor": "lemon",
+      "image": "images/gallery/26-lemon-cake-with-lemon-curd.webp",
+      "thumb": "images/gallery/26-lemon-cake-with-lemon-curd-sm.webp",
+      "match": {
+        "design": "custom",
+        "decoration": "classic"
       }
     }
   ],
