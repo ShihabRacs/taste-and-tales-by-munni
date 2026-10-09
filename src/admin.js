@@ -422,6 +422,7 @@ const tabs = {
           el('div', { class: 'thumb' }, el('img', { src: imgUrl(p.thumb), alt: '' })),
           el('div', { class: 'grow' },
             field(p, 'caption', 'Caption'),
+            field(p, 'hidden', 'Hide from the website', 'checkbox'),
             el('label', { class: 'field' }, 'Flavor',
               el('select', { onchange: (e) => { p.flavor = e.target.value || null; markDirty(); } },
                 el('option', { value: '' }, 'Not tagged'),

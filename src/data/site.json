@@ -176,7 +176,7 @@
         "id": "red-velvet",
         "label": "Classic Red Velvet",
         "description": "Red velvet with cream cheese filling (included) and vanilla buttercream",
-        "image": "18-red-velvet-cheesecake",
+        "image": "19-red-velvet-with-cream-cheese-frosting-an",
         "prices": {
           "5": 40,
           "6": 50,
@@ -630,7 +630,8 @@
       "thumb": "images/gallery/18-red-velvet-cheesecake-sm.webp",
       "match": {
         "frosting": "cream-cheese"
-      }
+      },
+      "hidden": true
     },
     {
       "id": "19-red-velvet-with-cream-cheese-frosting-an",

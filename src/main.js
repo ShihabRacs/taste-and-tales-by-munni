@@ -9,7 +9,7 @@ const { cakes } = cfg;
 const treats = [...(cfg.treats || []), ...(cfg.pastries || [])]; // everything sold by quantity
 const flavorById = (id) => cakes.flavors.find((f) => f.id === id);
 const sizeById = (id) => cakes.sizes.find((s) => s.id === id);
-const gallery = cfg.gallery || [];
+const gallery = (cfg.gallery || []).filter((p) => !p.hidden);
 const photoById = (id) => gallery.find((p) => p.id === id);
 const fromPrice = (f) => Math.min(...Object.values(f.prices).filter((v) => v != null));
 // Main photo first, then every gallery photo tagged with that flavor
