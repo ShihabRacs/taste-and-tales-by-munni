@@ -250,7 +250,7 @@
       {
         "id": "filling",
         "label": "Filling",
-        "hint": "included",
+        "hint": "special fillings +3€",
         "options": [
           {
             "id": "classic",
@@ -260,29 +260,29 @@
           {
             "id": "raspberry",
             "label": "Fresh raspberry compote",
-            "price": 0
+            "price": 3
           },
           {
             "id": "mixed-berry",
             "label": "Mixed berry compote",
-            "price": 0
+            "price": 3
           },
           {
             "id": "pineapple",
             "label": "Pineapple compote",
-            "price": 0
+            "price": 3
           },
           {
             "id": "rasmalai",
             "label": "Rasmalai filling",
-            "price": 0
+            "price": 3
           }
         ]
       },
       {
         "id": "decoration",
         "label": "Decoration style",
-        "hint": "included",
+        "hint": "ganache drip +3€",
         "options": [
           {
             "id": "classic",
@@ -297,7 +297,7 @@
           {
             "id": "drip",
             "label": "Ganache drip",
-            "price": 0
+            "price": 3
           },
           {
             "id": "nuts",
