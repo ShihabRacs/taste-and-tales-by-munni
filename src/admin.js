@@ -518,9 +518,19 @@ async function pwConnect(e) {
     let secret;
     try { secret = await unlock($('#username').value, $('#password').value); }
     catch { throw new Error('Wrong username or password.'); }
-    gh.token = secret.token;
-    gh.repo = secret.repo || guessRepo();
+    gh.repo = secret.repo || ls.get('tt-admin-repo') || guessRepo();
     gh.branch = 'main';
+    gh.token = secret.token || ls.get('tt-admin-token');
+    if (!gh.token) {
+      // Password is right, but no GitHub token was configured: ask for it once, keep it on this device
+      $('#pw-login').hidden = true;
+      $('#token-login').open = true;
+      $('#token-summary').textContent = 'One more step: connect GitHub';
+      $('#repo').value = gh.repo;
+      $('#login-err').textContent = '';
+      $('#login-ok').textContent = 'Username and password are correct. Paste the GitHub token once; it is saved on this device.';
+      return;
+    }
     await openApp();
     ss.set('tt-admin-session', JSON.stringify({ token: gh.token, repo: gh.repo }));
   } catch (err) {
@@ -560,4 +570,4 @@ const session = (() => { try { return JSON.parse(ss.get('tt-admin-session')); } 
 if (session?.token) {
   Object.assign(gh, { token: session.token, repo: session.repo, branch: 'main' });
   openApp().catch(() => ss.set('tt-admin-session', null));
-} else if ($('#token').value) connect();
+} else if ($('#token').value && !vault) connect(); // with a password set, always ask for it first

@@ -78,3 +78,5 @@ table.prices { border-collapse: collapse; width: 100%; min-width: 520px; }
 .stack { display: grid; gap: 12px; margin-top: 10px; }
 .stack label { display: grid; gap: 4px; font-weight: 600; }
 #token-login summary, .login details summary { cursor: pointer; font-weight: 600; color: var(--brand); }
+.login .ok { color: var(--ok); font-weight: 600; margin: 0; }
+.login .ok:empty, .login .err:empty { display: none; }
