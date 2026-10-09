@@ -302,7 +302,7 @@
       {
         "id": "decoration",
         "label": "Decoration style",
-        "hint": "ganache drip +3€",
+        "hint": "drip included · full ganache top +3€",
         "options": [
           {
             "id": "classic",
@@ -317,6 +317,11 @@
           {
             "id": "drip",
             "label": "Ganache drip",
+            "price": 0
+          },
+          {
+            "id": "ganache-top",
+            "label": "Full top decoration with ganache",
             "price": 3
           },
           {
@@ -459,7 +464,8 @@
       "thumb": "images/gallery/04-chocolate-ganache-cake-with-swiss-mering-sm.webp",
       "match": {
         "frosting": "ganache",
-        "flowers": "large"
+        "flowers": "large",
+        "decoration": "ganache-top"
       }
     },
     {
