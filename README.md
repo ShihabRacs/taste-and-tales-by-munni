@@ -12,7 +12,7 @@ Homemade cakes in Berlin. A fast static website built with Vite and hosted free 
 - Individual treats & savouries with quantities
 - Coupon codes you create in admin (percent off, on/off, optionally shown on the site)
 - Email popup that gives each visitor a personal one-time coupon
-- Orders go to Facebook Messenger (or WhatsApp) with the full order already written
+- Orders go to Facebook Messenger with the full order already written
 - Gallery carousel of real cakes with a full-screen view and "I want a cake like this"
 - Admin panel to change prices, flavors, photos, gallery, offers, texts and coupons, with no database
 

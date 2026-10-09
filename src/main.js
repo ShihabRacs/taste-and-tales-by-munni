@@ -520,16 +520,12 @@ function initOrder() {
   const saved = store.get('tt-contact', {});
   for (const k of ['name', 'phone', 'email']) if (saved[k] && !form[k].value) form[k].value = saved[k];
 
-  if (!cfg.site.messenger) $('#send-messenger').hidden = true;
-  if (!cfg.site.whatsapp) $('#send-whatsapp').hidden = true;
-  if (!cfg.site.messenger && cfg.site.whatsapp) $('#send-whatsapp').className = 'btn btn-primary';
 
   form.date.addEventListener('input', () => form.date.setCustomValidity(''));
   form.email.addEventListener('change', () => { if (applied?.kind === 'personal') applyCode(applied.code, true); });
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const via = e.submitter?.dataset.via || (cfg.site.messenger ? 'messenger' : 'whatsapp');
     const msg = $('#order-msg');
     if (!cart.cakes.length && !Object.keys(cart.treats).length) {
       msg.textContent = 'Your order is empty. Add a cake or some treats first.';
@@ -548,15 +544,11 @@ function initOrder() {
     const text = orderText(data);
     store.set('tt-contact', { name: data.name, phone: data.phone, email: data.email });
     navigator.clipboard?.writeText(text).catch(() => {});
-    const url = via === 'whatsapp'
-      ? `https://wa.me/${cfg.site.whatsapp.replace(/\D/g, '')}?text=${encodeURIComponent(text)}`
-      : `https://m.me/${cfg.site.messenger}?text=${encodeURIComponent(text)}`;
+    const url = `https://m.me/${cfg.site.messenger}?text=${encodeURIComponent(text)}`;
     const w = window.open(url, '_blank');
     if (w) w.opener = null; else location.href = url;
     if (applied?.kind === 'personal') store.set('tt-used', [...new Set([...usedHere(), applied.code])]);
-    msg.textContent = via === 'messenger'
-      ? 'Messenger is opening. Your order is also copied, so you can paste it if the message box is empty. Press send to finish.'
-      : 'WhatsApp is opening with your order. Press send to finish.';
+    msg.textContent = 'Messenger is opening. Your order is also copied, so you can paste it if the message box is empty. Press send to finish.';
   });
 }
 

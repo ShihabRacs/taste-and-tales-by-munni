@@ -218,7 +218,6 @@ const tabs = {
         el('div', { class: 'grid2' },
           field(s, 'facebook', 'Facebook page link', 'url'),
           field(s, 'messenger', 'Messenger username (the part after facebook.com/)'),
-          field(s, 'whatsapp', 'WhatsApp number', 'tel'),
           field(s, 'instagram', 'Instagram username'),
           field(s, 'location', 'Location'),
           field(s, 'currency', 'Currency symbol'),
