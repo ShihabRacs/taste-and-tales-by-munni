@@ -17,11 +17,21 @@
   <section class="login card" id="login">
     <h1>Sign in</h1>
     <p>Changes are saved to GitHub, and the website updates itself about a minute later.</p>
+    <form id="pw-login" class="stack" hidden>
+      <label>Username<input id="username" autocomplete="username" required /></label>
+      <label>Password<input id="password" type="password" autocomplete="current-password" required /></label>
+      <button class="btn" id="pw-connect">Sign in</button>
+    </form>
+    <details id="token-login">
+      <summary id="token-summary">Sign in with a GitHub token instead</summary>
+    <div class="stack">
     <label>Repository<input id="repo" placeholder="owner/repo" /></label>
     <label>Branch<input id="branch" value="main" /></label>
     <label>GitHub access token<input id="token" type="password" placeholder="github_pat_…" autocomplete="off" /></label>
     <label class="check"><input type="checkbox" id="remember" checked /> Remember on this device</label>
     <button class="btn" id="connect">Connect</button>
+    </div>
+    </details>
     <details>
       <summary>How do I get a token?</summary>
       <ol>

@@ -468,19 +468,67 @@ function guessRepo() {
   return m && seg && seg !== 'admin' ? `${m[1]}/${seg}` : 'ShihabRacs/taste-and-tales-by-munni';
 }
 
+const ss = {
+  get(k) { try { return sessionStorage.getItem(k); } catch { return null; } },
+  set(k, v) { try { v == null ? sessionStorage.removeItem(k) : sessionStorage.setItem(k, v); } catch {} },
+};
+
+async function openApp() {
+  await load();
+  $('#login').hidden = true;
+  $('#app').hidden = false;
+}
+
 async function connect() {
   gh.repo = $('#repo').value.trim();
   gh.branch = $('#branch').value.trim() || 'main';
   gh.token = $('#token').value.trim();
   $('#login-err').textContent = '';
   try {
-    await load();
+    await openApp();
     if ($('#remember').checked) { ls.set('tt-admin-repo', gh.repo); ls.set('tt-admin-branch', gh.branch); ls.set('tt-admin-token', gh.token); }
-    $('#login').hidden = true;
-    $('#app').hidden = false;
   } catch (e) {
     $('#login-err').textContent = /401|403|404/.test(e.message) ? `Could not open the repository (${e.message}). Check the token and repository name.` : e.message;
     setStatus('');
+  }
+}
+
+/* Username + password sign-in: unlocks the GitHub token that the build encrypted with them */
+// eslint-disable-next-line no-undef
+const vault = typeof __ADMIN_VAULT__ !== 'undefined' ? __ADMIN_VAULT__ : null;
+const fromB64 = (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
+
+async function unlock(user, pass) {
+  const base = await crypto.subtle.importKey('raw', new TextEncoder().encode(`${user.trim().toLowerCase()}\n${pass}`), 'PBKDF2', false, ['deriveKey']);
+  const key = await crypto.subtle.deriveKey(
+    { name: 'PBKDF2', salt: fromB64(vault.salt), iterations: vault.iterations, hash: 'SHA-256' },
+    base, { name: 'AES-GCM', length: 256 }, false, ['decrypt']);
+  const plain = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: fromB64(vault.iv) }, key, fromB64(vault.data));
+  return JSON.parse(new TextDecoder().decode(plain));
+}
+
+async function pwConnect(e) {
+  e?.preventDefault();
+  const btn = $('#pw-connect');
+  btn.disabled = true;
+  btn.textContent = 'Checking…';
+  $('#login-err').textContent = '';
+  try {
+    let secret;
+    try { secret = await unlock($('#username').value, $('#password').value); }
+    catch { throw new Error('Wrong username or password.'); }
+    gh.token = secret.token;
+    gh.repo = secret.repo || guessRepo();
+    gh.branch = 'main';
+    await openApp();
+    ss.set('tt-admin-session', JSON.stringify({ token: gh.token, repo: gh.repo }));
+  } catch (err) {
+    $('#login-err').textContent = err.message.startsWith('Wrong') ? err.message
+      : `Signed in, but GitHub refused the stored token (${err.message}). Update ADMIN_GITHUB_TOKEN in the repository secrets.`;
+    setStatus('');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Sign in';
   }
 }
 
@@ -491,6 +539,24 @@ $('#connect').addEventListener('click', connect);
 $('#token').addEventListener('keydown', (e) => e.key === 'Enter' && connect());
 $('#publish').addEventListener('click', publish);
 $('#reload').addEventListener('click', () => { if (!dirty || confirm('Discard unsaved changes?')) load(); });
-const signOut = el('button', { class: 'btn ghost sm', onclick: () => { ['repo', 'branch', 'token'].forEach((k) => ls.set(`tt-admin-${k}`, null)); location.reload(); } }, 'Sign out');
+const signOut = el('button', { class: 'btn ghost sm', onclick: () => {
+  ['repo', 'branch', 'token'].forEach((k) => ls.set(`tt-admin-${k}`, null));
+  ss.set('tt-admin-session', null);
+  location.reload();
+} }, 'Sign out');
 $('.top').append(signOut);
-if ($('#token').value) connect();
+
+if (vault) {
+  $('#pw-login').hidden = false;
+  $('#pw-login').addEventListener('submit', pwConnect);
+} else {
+  $('#token-login').open = true;
+  $('#token-summary').textContent = 'Sign in with a GitHub token';
+}
+
+// Stay signed in for this browser tab only (password sign-in), or on this device (token sign-in)
+const session = (() => { try { return JSON.parse(ss.get('tt-admin-session')); } catch { return null; } })();
+if (session?.token) {
+  Object.assign(gh, { token: session.token, repo: session.repo, branch: 'main' });
+  openApp().catch(() => ss.set('tt-admin-session', null));
+} else if ($('#token').value) connect();

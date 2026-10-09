@@ -23,12 +23,17 @@ Every change to `main` is built and deployed automatically by [GitHub Actions](.
 
 ### Admin sign-in
 
-The admin panel needs a GitHub fine-grained token:
+Add three repository secrets under **Settings → Secrets and variables → Actions → New repository secret**:
 
-1. Go to https://github.com/settings/personal-access-tokens/new
-2. Repository access: **Only select repositories** → `taste-and-tales-by-munni`
-3. Permissions: **Contents: Read and write**, **Actions: Read-only**
-4. Paste the token in the admin page. It is stored only on that device.
+| Secret | Value |
+| --- | --- |
+| `ADMIN_USERNAME` | the admin username |
+| `ADMIN_PASSWORD` | a long password (it protects the token below, so make it strong) |
+| `ADMIN_GITHUB_TOKEN` | a fine-grained token: **Only select repositories** → `taste-and-tales-by-munni`, permissions **Contents: Read and write** and **Actions: Read-only** ([create one](https://github.com/settings/personal-access-tokens/new)) |
+
+Then re-run the Deploy workflow (or push any change). During the build the token is encrypted with a key derived from the username and password (PBKDF2, 600,000 rounds → AES-GCM); only the encrypted copy is published. Signing in with the right username and password unlocks it in the browser.
+
+To change the password, update the secrets and re-run Deploy. Without the secrets, the admin page asks for a GitHub token instead.
 
 ### Personal coupons
 
