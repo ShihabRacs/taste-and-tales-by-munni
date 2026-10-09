@@ -2,8 +2,8 @@
 
 Homemade cakes in Berlin. A fast static website built with Vite and hosted free on Vercel.
 
-- **Website:** https://tasteandtalesbymunni.vercel.app/
-- **Admin:** https://tasteandtalesbymunni.vercel.app/admin
+- **Website:** https://taste-and-tales-by-munni.vercel.app/
+- **Admin:** https://taste-and-tales-by-munni.vercel.app/admin
 
 ## Features
 
@@ -23,7 +23,7 @@ Every change to `main` is built and deployed automatically by Vercel, usually wi
 
 ### Admin sign-in
 
-Add three environment variables in **Vercel → tasteandtalesbymunni → Settings → Environment Variables** (environment: Production, mark them **Sensitive**):
+Add three environment variables in **Vercel → taste-and-tales-by-munni → Settings → Environment Variables** (environment: Production, mark them **Sensitive**):
 
 | Name | Value |
 | --- | --- |
