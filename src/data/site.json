@@ -215,13 +215,8 @@
             "price": 0
           },
           {
-            "id": "pink-smbc",
+            "id": "colorful-smbc",
             "label": "Colorful Swiss meringue buttercream",
-            "price": 0
-          },
-          {
-            "id": "lemon-smbc",
-            "label": "Lemon-yellow Swiss meringue buttercream",
             "price": 0
           }
         ]
@@ -429,7 +424,7 @@
       "image": "images/gallery/02-chocolate-heart-cake-with-lemon-yellow-b.webp",
       "thumb": "images/gallery/02-chocolate-heart-cake-with-lemon-yellow-b-sm.webp",
       "match": {
-        "frosting": "lemon-smbc",
+        "frosting": "colorful-smbc",
         "decoration": "fondant",
         "design": "custom"
       }
@@ -441,7 +436,7 @@
       "image": "images/gallery/03-rainbow-themed-cake-with-pink-buttercrea.webp",
       "thumb": "images/gallery/03-rainbow-themed-cake-with-pink-buttercrea-sm.webp",
       "match": {
-        "frosting": "pink-smbc",
+        "frosting": "colorful-smbc",
         "decoration": "themed",
         "design": "custom",
         "topper": "premium"
@@ -475,7 +470,7 @@
       "image": "images/gallery/06-pink-buttercream-on-chocolate-cake.webp",
       "thumb": "images/gallery/06-pink-buttercream-on-chocolate-cake-sm.webp",
       "match": {
-        "frosting": "pink-smbc"
+        "frosting": "colorful-smbc"
       }
     },
     {
@@ -517,7 +512,7 @@
       "image": "images/gallery/10-vanilla-cake-with-pineapple-compote-pink.webp",
       "thumb": "images/gallery/10-vanilla-cake-with-pineapple-compote-pink-sm.webp",
       "match": {
-        "frosting": "pink-smbc",
+        "frosting": "colorful-smbc",
         "filling": "pineapple",
         "flowers": "large"
       }
@@ -563,7 +558,7 @@
       "image": "images/gallery/14-pink-buttercream-on-chocolate-with-butte.webp",
       "thumb": "images/gallery/14-pink-buttercream-on-chocolate-with-butte-sm.webp",
       "match": {
-        "frosting": "pink-smbc",
+        "frosting": "colorful-smbc",
         "decoration": "floral"
       }
     },
@@ -574,7 +569,7 @@
       "image": "images/gallery/15-vintage-pink-buttercream-on-chocolate-ca.webp",
       "thumb": "images/gallery/15-vintage-pink-buttercream-on-chocolate-ca-sm.webp",
       "match": {
-        "frosting": "pink-smbc",
+        "frosting": "colorful-smbc",
         "decoration": "vintage"
       }
     },
@@ -585,7 +580,7 @@
       "image": "images/gallery/16-pink-heart-cake-with-chocolate-sponge.webp",
       "thumb": "images/gallery/16-pink-heart-cake-with-chocolate-sponge-sm.webp",
       "match": {
-        "frosting": "pink-smbc",
+        "frosting": "colorful-smbc",
         "decoration": "vintage"
       }
     },
