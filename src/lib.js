@@ -72,3 +72,15 @@ export async function checkCode(cfg, code, email, d = new Date()) {
   }
   return { ok: false, reason: 'Unknown code.' };
 }
+
+// Calendar dates in Berlin time. Europe/Berlin switches between CET and CEST
+// (daylight saving) automatically, whatever the visitor's own time zone is.
+export const BUSINESS_TZ = 'Europe/Berlin';
+export const todayIn = (tz = BUSINESS_TZ, d = new Date()) =>
+  new Intl.DateTimeFormat('en-CA', { timeZone: tz, year: 'numeric', month: '2-digit', day: '2-digit' }).format(d);
+// Adds whole calendar days to a YYYY-MM-DD date (UTC arithmetic, so no DST gaps)
+export function addDays(iso, n) {
+  const [y, m, d] = iso.split('-').map(Number);
+  return new Date(Date.UTC(y, m - 1, d + n)).toISOString().slice(0, 10);
+}
+export const earliestPickup = (days, d = new Date()) => addDays(todayIn(BUSINESS_TZ, d), days || 0);

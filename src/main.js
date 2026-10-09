@@ -1,6 +1,6 @@
 import './style.css';
 import cfg from './data/site.json';
-import { asset, timeOfDay, activeOffers, money, cakePrice, treatsPrice, personalCode, isEmail, checkCode } from './lib.js';
+import { asset, timeOfDay, activeOffers, money, cakePrice, treatsPrice, personalCode, isEmail, checkCode, earliestPickup } from './lib.js';
 
 const $ = (s, r = document) => r.querySelector(s);
 const cur = cfg.site.currency;
@@ -505,9 +505,10 @@ function orderText(data) {
 
 function initOrder() {
   const form = $('#order-form');
-  const min = new Date();
-  min.setDate(min.getDate() + (cfg.site.minDaysNotice || 0));
-  form.date.min = min.toISOString().slice(0, 10);
+  // Earliest pickup: today in Berlin (CET/CEST) + notice days; refreshed in case the tab stays open past midnight
+  const setMin = () => (form.date.min = earliestPickup(cfg.site.minDaysNotice));
+  setMin();
+  form.date.addEventListener('focus', setMin);
   $('#pickup-select').replaceChildren(...cfg.site.pickupPoints.map((p) => el('option', {}, p)));
   if (claimed()) form.email.value = claimed().email;
   const saved = store.get('tt-contact', {});
@@ -517,6 +518,7 @@ function initOrder() {
   if (!cfg.site.whatsapp) $('#send-whatsapp').hidden = true;
   if (!cfg.site.messenger && cfg.site.whatsapp) $('#send-whatsapp').className = 'btn btn-primary';
 
+  form.date.addEventListener('input', () => form.date.setCustomValidity(''));
   form.email.addEventListener('change', () => { if (applied?.kind === 'personal') applyCode(applied.code, true); });
 
   form.addEventListener('submit', async (e) => {
@@ -527,6 +529,10 @@ function initOrder() {
       msg.textContent = 'Your order is empty. Add a cake or some treats first.';
       return $('#builder').scrollIntoView({ behavior: 'smooth' });
     }
+    setMin();
+    if (form.date.value && form.date.value < form.date.min) {
+      form.date.setCustomValidity(`Please choose ${form.date.min} or later. Orders need ${cfg.site.minDaysNotice} days notice (Berlin time).`);
+    } else form.date.setCustomValidity('');
     if (!form.reportValidity()) return;
     if (applied && !(await applyCode(applied.code, true))) {
       msg.textContent = 'Your code is not valid for this order. Remove it or fix the email.';
