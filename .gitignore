@@ -4,3 +4,6 @@ dist
 *.local
 assets/*
 !assets/README.md
+
+.vercel
+.env*
