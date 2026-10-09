@@ -157,7 +157,7 @@
       {
         "id": "lemon",
         "label": "Lemon",
-        "description": "Lemon cake with lemon curd frosting and vanilla buttercream",
+        "description": "Lemon cake with lemon curd filling (included) and vanilla buttercream",
         "image": "26-lemon-cake-with-lemon-curd",
         "prices": {
           "5": 35,
@@ -167,7 +167,10 @@
           "9": 85,
           "10": null
         },
-        "color": "#F4D35E"
+        "color": "#F4D35E",
+        "fixed": {
+          "filling": "Lemon curd filling"
+        }
       },
       {
         "id": "red-velvet",
