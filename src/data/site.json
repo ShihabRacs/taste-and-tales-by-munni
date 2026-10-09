@@ -1,0 +1,87 @@
+{
+  "site": {
+    "name": "Taste and Tales by Munni",
+    "tagline": "Homemade cakes, made with love, baked to perfection",
+    "facebook": "https://www.facebook.com/tonatunirJibon",
+    "messenger": "tonatunirJibon",
+    "whatsapp": "+49 162 4007746",
+    "instagram": "tasteandtalesbymunni",
+    "location": "Berlin, Germany",
+    "currency": "€",
+    "minDaysNotice": 5,
+    "pickupPoints": ["Lichtenberg Bahnhof", "Nöldnerplatz Bahnhof"],
+    "badges": ["100% Halal", "Eggless version available", "Order 5 days in advance"]
+  },
+  "coupon": {
+    "enabled": true,
+    "prefix": "MUNNI",
+    "percent": 10,
+    "salt": "tt-munni-2026",
+    "popupDelaySeconds": 6,
+    "redeemed": []
+  },
+  "hero": {
+    "dayStartsAt": "06:00",
+    "eveningStartsAt": "17:00",
+    "day": {
+      "eyebrow": "Good day, sweetheart",
+      "title": "Soft as vanilla, sweet as a morning tale",
+      "subtitle": "Homemade cakes from Berlin, baked fresh for your special day.",
+      "slides": ["vanilla", "lemon", "rasmalai"]
+    },
+    "evening": {
+      "eyebrow": "Good evening",
+      "title": "Rich chocolate for cozy evenings",
+      "subtitle": "Deep, indulgent layers. Plan tonight, celebrate this week.",
+      "slides": ["chocolate", "coffee", "red-velvet"]
+    }
+  },
+  "offers": [
+    { "code": "MORNING10", "label": "Early bird: 10% off cakes ordered before 11am", "percent": 10, "start": "06:00", "end": "11:00", "active": true },
+    { "code": "COCOA15", "label": "Chocolate hour: 15% off every evening 6 to 10pm", "percent": 15, "start": "18:00", "end": "22:00", "active": true }
+  ],
+  "cakes": {
+    "sizes": [
+      { "id": "5", "label": "5\"", "serves": "4–6" },
+      { "id": "6", "label": "6\"", "serves": "8–10" },
+      { "id": "7", "label": "7\"", "serves": "12–14" },
+      { "id": "8", "label": "8\"", "serves": "16–20" },
+      { "id": "9", "label": "9\"", "serves": "22–26" }
+    ],
+    "flavors": [
+      { "id": "vanilla", "label": "Vanilla", "description": "Vanilla cake with vanilla buttercream", "image": "images/cakes/vanilla.webp", "prices": { "5": 30, "6": 40, "7": 50, "8": 60, "9": 75 } },
+      { "id": "chocolate", "label": "Chocolate", "description": "Chocolate cake with chocolate buttercream", "image": "images/cakes/chocolate.webp", "prices": { "5": 35, "6": 45, "7": 55, "8": 70, "9": 85 } },
+      { "id": "coffee", "label": "Coffee", "description": "Coffee cake with coffee buttercream", "image": "images/cakes/coffee.webp", "prices": { "5": 35, "6": 45, "7": 55, "8": 70, "9": 85 } },
+      { "id": "lemon", "label": "Lemon", "description": "Lemon cake with lemon curd frosting and vanilla buttercream", "image": "images/cakes/lemon.webp", "prices": { "5": 35, "6": 45, "7": 55, "8": 70, "9": 85 } },
+      { "id": "red-velvet", "label": "Classic Red Velvet", "description": "Red velvet with cream cheese frosting and vanilla buttercream", "image": "images/cakes/red-velvet.webp", "prices": { "5": 40, "6": 50, "7": 60, "8": 75, "9": 90 } },
+      { "id": "rasmalai", "label": "Rasmalai", "description": "Rasmalai cake with dairy cream and buttercream", "image": "images/cakes/rasmalai.webp", "prices": { "5": 40, "6": 50, "7": 60, "8": 75, "9": 90 } }
+    ],
+    "extras": [
+      { "id": "design", "label": "Custom design", "hint": "from 5€, final price confirmed by Munni", "options": [
+        { "id": "none", "label": "None", "price": 0 },
+        { "id": "custom", "label": "Custom design", "price": 5 }
+      ] },
+      { "id": "topper", "label": "Topper", "hint": "from 3–5€", "options": [
+        { "id": "none", "label": "None", "price": 0 },
+        { "id": "simple", "label": "Simple topper", "price": 3 },
+        { "id": "premium", "label": "Premium topper", "price": 5 }
+      ] },
+      { "id": "flowers", "label": "Fresh flowers", "hint": "from 5–10€", "options": [
+        { "id": "none", "label": "None", "price": 0 },
+        { "id": "small", "label": "A few blooms", "price": 5 },
+        { "id": "large", "label": "Full floral crown", "price": 10 }
+      ] },
+      { "id": "eggless", "label": "Eggless", "hint": "available for every flavor", "options": [
+        { "id": "no", "label": "With eggs", "price": 0 },
+        { "id": "yes", "label": "Eggless", "price": 0 }
+      ] }
+    ]
+  },
+  "treats": [
+    { "id": "muffin-vanilla", "label": "Vanilla Muffin Box (6)", "description": "Vanilla buttercream", "price": 15 },
+    { "id": "muffin-chocolate", "label": "Chocolate Muffin Box (6)", "description": "Chocolate buttercream", "price": 18 },
+    { "id": "muffin-red-velvet", "label": "Red Velvet Muffin Box (6)", "description": "Cream cheese buttercream", "price": 21 },
+    { "id": "brownie", "label": "Brownie Box (6×6)", "description": "9 pieces", "price": 22 },
+    { "id": "patties", "label": "Chicken Patties (5 pcs)", "description": "Savoury", "price": 20 }
+  ]
+}

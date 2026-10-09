@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Taste and Tales by Munni · Homemade Cakes in Berlin</title>
+  <meta name="description" content="Homemade cakes in Berlin by Munni. Vanilla, chocolate, coffee, lemon, red velvet and rasmalai. Build your cake, see the price instantly, order on Messenger." />
+  <meta name="theme-color" content="#F4A6B7" />
+  <meta property="og:title" content="Taste and Tales by Munni" />
+  <meta property="og:description" content="Homemade cakes, made with love, baked to perfection. 100% Halal, eggless available." />
+  <meta property="og:type" content="website" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎂</text></svg>" />
+  <script>
+    // Set theme before first paint; main.js refines it from the config
+    (function () {
+      var t = new URLSearchParams(location.search).get('theme'); try { t = t || sessionStorage.getItem('tt-theme'); } catch (e) {}
+      var h = new Date().getHours();
+      document.documentElement.dataset.time = t || (h >= 6 && h < 17 ? 'day' : 'evening');
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Great+Vibes&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <a class="skip" href="#builder">Skip to the cake builder</a>
+  <header class="nav" id="nav">
+    <a class="brand" href="#top" aria-label="Taste and Tales by Munni, home">
+      <span class="brand-main">Taste &amp; Tales</span><span class="brand-script">by Munni</span>
+    </a>
+    <nav class="nav-links" aria-label="Main">
+      <a href="#cakes">Cakes</a>
+      <a href="#treats">Treats</a>
+      <a href="#offers">Offers</a>
+      <a href="#info">Pickup</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn" id="theme-toggle" type="button" aria-label="Switch day or evening theme"></button>
+      <a class="btn btn-primary btn-sm" href="#order">Order <span class="cart-count" id="cart-count" hidden>0</span></a>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero" id="hero">
+      <div class="hero-text">
+        <p class="eyebrow" id="hero-eyebrow"></p>
+        <h1 id="hero-title"></h1>
+        <p class="hero-sub" id="hero-subtitle"></p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="#builder">Build your cake</a>
+          <a class="btn btn-ghost" href="#cakes">See the menu</a>
+        </div>
+        <ul class="badges" id="badges"></ul>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="arch" id="hero-slides"></div>
+        <div class="hero-tag" id="hero-tag"></div>
+      </div>
+    </section>
+
+    <section class="offers" id="offers" aria-live="polite">
+      <div class="offers-inner" id="offers-list"></div>
+    </section>
+
+    <section class="section" id="cakes">
+      <div class="section-head">
+        <p class="script">Made with love</p>
+        <h2>Our cakes</h2>
+        <p>Every cake starts at 5" and is baked fresh to order.</p>
+      </div>
+      <div class="flavor-grid" id="flavor-grid"></div>
+    </section>
+
+    <section class="section builder-wrap" id="builder">
+      <div class="section-head">
+        <p class="script">Your cake, your tale</p>
+        <h2>Build your cake</h2>
+        <p>Pick your options. The price updates as you go.</p>
+      </div>
+      <div class="builder">
+        <figure class="preview card">
+          <div class="preview-img"><img id="cake-img" alt="" width="348" height="178" /></div>
+          <figcaption>
+            <strong id="cake-name"></strong>
+            <span id="cake-desc"></span>
+          </figcaption>
+          <div class="price-live">
+            <span>Cake price</span>
+            <strong id="cake-price">0€</strong>
+          </div>
+        </figure>
+        <form id="builder-form" class="options card" novalidate>
+          <fieldset><legend>Flavor</legend><div class="chips flavors" id="opt-flavor"></div></fieldset>
+          <fieldset><legend>Size</legend><div class="chips sizes" id="opt-size"></div></fieldset>
+          <div id="opt-extras"></div>
+          <label class="field">Message on the cake <small>(optional)</small>
+            <input id="opt-message" maxlength="60" placeholder="Happy Birthday Ayaan!" />
+          </label>
+          <button class="btn btn-primary btn-block" type="submit" id="add-cake">Add cake to order</button>
+        </form>
+      </div>
+    </section>
+
+    <section class="section" id="treats">
+      <div class="section-head">
+        <p class="script">Little joys</p>
+        <h2>Individual treats &amp; savouries</h2>
+      </div>
+      <ul class="treats card" id="treats-list"></ul>
+    </section>
+
+    <section class="section" id="order">
+      <div class="section-head">
+        <p class="script">Almost there</p>
+        <h2>Your order</h2>
+      </div>
+      <div class="order-grid">
+        <div class="summary card">
+          <ul class="cart" id="cart"></ul>
+          <div class="coupon">
+            <label for="coupon-input">Coupon or offer code</label>
+            <div class="row">
+              <input id="coupon-input" placeholder="MUNNI-XXXXXX" autocomplete="off" />
+              <button type="button" class="btn btn-ghost" id="coupon-apply">Apply</button>
+            </div>
+            <small id="coupon-msg" aria-live="polite"></small>
+          </div>
+          <dl class="totals">
+            <dt>Subtotal</dt><dd id="subtotal">0€</dd>
+            <dt>Discount</dt><dd id="discount">0€</dd>
+            <dt class="grand">Total</dt><dd class="grand" id="total">0€</dd>
+          </dl>
+        </div>
+        <form class="card contact" id="order-form">
+          <label class="field">Name<input name="name" autocomplete="name" required /></label>
+          <label class="field">Phone<input name="phone" type="tel" autocomplete="tel" required /></label>
+          <label class="field">Email<input name="email" type="email" autocomplete="email" required /></label>
+          <div class="two">
+            <label class="field">Pickup date<input name="date" type="date" required /></label>
+            <label class="field">Pickup point<select name="pickup" id="pickup-select" required></select></label>
+          </div>
+          <label class="field">Notes<textarea name="notes" rows="3" placeholder="Allergies, colors, theme, time of pickup…"></textarea></label>
+          <div class="actions">
+            <button class="btn btn-primary" type="submit" data-via="messenger" id="send-messenger">Send order on Messenger</button>
+            <button class="btn btn-ghost" type="submit" data-via="whatsapp" id="send-whatsapp">WhatsApp</button>
+          </div>
+          <small class="hint" id="order-msg" aria-live="polite"></small>
+        </form>
+      </div>
+    </section>
+
+    <section class="section info" id="info">
+      <div class="info-grid">
+        <div class="card">
+          <h3>Pickup points</h3>
+          <ul class="dots" id="pickup-list"></ul>
+        </div>
+        <div class="card">
+          <h3>Good to know</h3>
+          <ul class="dots" id="notes-list"></ul>
+        </div>
+        <div class="card">
+          <h3>Say hello</h3>
+          <ul class="contact-links" id="contact-links"></ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p class="brand-script">Taste and Tales by Munni</p>
+    <p>© <span id="year"></span> · Homemade in <span id="footer-loc"></span></p>
+  </footer>
+
+  <dialog id="email-gate" aria-labelledby="gate-title">
+    <form method="dialog" id="gate-form">
+      <button class="close" value="cancel" aria-label="Close" formnovalidate>×</button>
+      <p class="script">A little gift</p>
+      <h3 id="gate-title">Get <span id="gate-percent"></span> off your first cake</h3>
+      <p>Enter your email and we'll make you a personal, one-time coupon code.</p>
+      <div id="gate-ask">
+        <input type="email" name="email" placeholder="you@example.com" autocomplete="email" required />
+        <button class="btn btn-primary btn-block" value="ok">Get my code</button>
+      </div>
+      <div id="gate-result" hidden>
+        <p class="code" id="gate-code"></p>
+        <p class="hint">Your code is saved and applied to your order. Use the same email when you order. It works once.</p>
+        <button class="btn btn-primary btn-block" value="done" formnovalidate>Start building</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" hidden></div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

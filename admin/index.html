@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Admin · Taste and Tales by Munni</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎂</text></svg>" />
+</head>
+<body>
+  <header class="top">
+    <strong>🎂 Taste &amp; Tales · Admin</strong>
+    <span class="status" id="status"></span>
+    <a id="view-site" href="../" target="_blank" rel="noopener">View site ↗</a>
+  </header>
+
+  <section class="login card" id="login">
+    <h1>Sign in</h1>
+    <p>Changes are saved to GitHub, and the website updates itself about a minute later.</p>
+    <label>Repository<input id="repo" placeholder="owner/repo" /></label>
+    <label>Branch<input id="branch" value="main" /></label>
+    <label>GitHub access token<input id="token" type="password" placeholder="github_pat_…" autocomplete="off" /></label>
+    <label class="check"><input type="checkbox" id="remember" checked /> Remember on this device</label>
+    <button class="btn" id="connect">Connect</button>
+    <details>
+      <summary>How do I get a token?</summary>
+      <ol>
+        <li>Open <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">GitHub → New fine-grained token</a>.</li>
+        <li>Expiration: pick a date (e.g. 1 year).</li>
+        <li>Repository access: <b>Only select repositories</b>, then choose this site's repository.</li>
+        <li>Permissions: <b>Contents: Read and write</b> and <b>Actions: Read-only</b>.</li>
+        <li>Generate, copy, and paste it above. Never share it.</li>
+      </ol>
+    </details>
+    <p class="err" id="login-err"></p>
+  </section>
+
+  <div class="app" id="app" hidden>
+    <nav class="tabs" id="tabs"></nav>
+    <main id="panel"></main>
+    <footer class="savebar">
+      <span id="dirty">No unsaved changes</span>
+      <button class="btn ghost" id="reload">Discard</button>
+      <button class="btn" id="publish" disabled>Save &amp; publish</button>
+    </footer>
+  </div>
+
+  <script type="module" src="/src/admin.js"></script>
+</body>
+</html>
