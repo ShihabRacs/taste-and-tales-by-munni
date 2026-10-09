@@ -250,7 +250,7 @@
       {
         "id": "design",
         "label": "Custom design",
-        "hint": "from 5€, final price confirmed by Munni",
+        "hint": "any customization from 5€",
         "options": [
           {
             "id": "none",
@@ -259,7 +259,7 @@
           },
           {
             "id": "custom",
-            "label": "Custom design",
+            "label": "Any customization",
             "price": 5,
             "from": true
           }
@@ -268,7 +268,7 @@
       {
         "id": "filling",
         "label": "Filling",
-        "hint": "compotes from 5€ · rasmalai filling from 3€",
+        "hint": "special fillings +3€ · berry fillings from 5€",
         "options": [
           {
             "id": "classic",
@@ -290,14 +290,12 @@
           {
             "id": "pineapple",
             "label": "Pineapple compote",
-            "price": 5,
-            "from": true
+            "price": 3
           },
           {
             "id": "rasmalai",
             "label": "Rasmalai filling",
-            "price": 3,
-            "from": true
+            "price": 3
           }
         ],
         "showIf": {
@@ -307,7 +305,7 @@
       {
         "id": "decoration",
         "label": "Decoration style",
-        "hint": "from 5€ · classic piping and ganache drip included",
+        "hint": "classic, vintage and drip included · others from 5€",
         "options": [
           {
             "id": "classic",
@@ -327,21 +325,20 @@
           },
           {
             "id": "ganache-top",
-            "label": "Full top decoration with ganache",
+            "label": "Ganache topping + filling",
             "price": 5,
             "from": true
           },
           {
             "id": "nuts",
-            "label": "Walnut topping",
+            "label": "Nut topping + filling",
             "price": 5,
             "from": true
           },
           {
             "id": "vintage",
             "label": "Vintage piping",
-            "price": 5,
-            "from": true
+            "price": 0
           },
           {
             "id": "fondant",
