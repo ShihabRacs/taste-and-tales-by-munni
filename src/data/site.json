@@ -267,7 +267,7 @@
       {
         "id": "filling",
         "label": "Filling",
-        "hint": "special fillings +3€",
+        "hint": "compotes +5€ · rasmalai filling +3€",
         "options": [
           {
             "id": "classic",
@@ -277,17 +277,17 @@
           {
             "id": "raspberry",
             "label": "Fresh raspberry compote",
-            "price": 3
+            "price": 5
           },
           {
             "id": "mixed-berry",
             "label": "Mixed berry compote",
-            "price": 3
+            "price": 5
           },
           {
             "id": "pineapple",
             "label": "Pineapple compote",
-            "price": 3
+            "price": 5
           },
           {
             "id": "rasmalai",
