@@ -187,7 +187,7 @@
       {
         "id": "rasmalai",
         "label": "Rasmalai",
-        "description": "Rasmalai cake with dairy cream and buttercream",
+        "description": "Rasmalai cake with rasmalai filling (included), dairy cream and buttercream",
         "image": "17-rasmalai-cake-with-rasmalai-filling",
         "prices": {
           "5": 40,
@@ -281,11 +281,6 @@
           {
             "id": "pineapple",
             "label": "Pineapple compote",
-            "price": 3
-          },
-          {
-            "id": "rasmalai",
-            "label": "Rasmalai filling",
             "price": 3
           }
         ],
@@ -604,9 +599,7 @@
       "flavor": "rasmalai",
       "image": "images/gallery/17-rasmalai-cake-with-rasmalai-filling.webp",
       "thumb": "images/gallery/17-rasmalai-cake-with-rasmalai-filling-sm.webp",
-      "match": {
-        "filling": "rasmalai"
-      }
+      "match": {}
     },
     {
       "id": "18-red-velvet-cheesecake",
@@ -648,7 +641,6 @@
       "image": "images/gallery/21-rasmalai-cake-with-fresh-roses.webp",
       "thumb": "images/gallery/21-rasmalai-cake-with-fresh-roses-sm.webp",
       "match": {
-        "filling": "rasmalai",
         "flowers": "large"
       }
     },
